@@ -12,7 +12,7 @@ interface ProjectCardProps {
   onClick?: () => void;
 }
 
-export function ProjectCard({ img, amb, ttl, square = false, h, onClick }: ProjectCardProps) {
+export function ProjectCard({ img, amb, ttl, onClick }: ProjectCardProps) {
   const [hover, setHover] = useState(false);
   return (
     <div
@@ -21,8 +21,8 @@ export function ProjectCard({ img, amb, ttl, square = false, h, onClick }: Proje
       onMouseLeave={() => setHover(false)}
       style={{
         cursor: 'pointer', overflow: 'hidden', position: 'relative',
-        height: square ? 'auto' : (h ?? 'auto'),
-        aspectRatio: square ? '1 / 1' : undefined,
+        height: 'auto',
+        aspectRatio: '1 / 1',
         background: 'var(--antracite)',
       }}
     >

@@ -1,57 +1,81 @@
 /* ============================================================
-   THE BEST — Utility classes (.ds-*)
-   Extraídas do bundle original (Fase 0)
-   Implementação completa vem na Fase 2
+   THE BEST — Design System · Utility Classes
+   Valores extraídos do bundle original (index.html)
    ============================================================ */
 
-/* placeholder — classes serão expandidas com o CSS completo do bundle na Fase 2 */
-
+/* ---------- Eyebrow ---------- */
 .ds-eyebrow {
   font-family: var(--sans);
   font-size: var(--eyebrow);
   font-weight: var(--w-med);
-  letter-spacing: 0.18em;
+  letter-spacing: 0.36em;
   text-transform: uppercase;
-  color: var(--champagne);
+  color: var(--accent);
 }
 
-.ds-body-lg { font-family: var(--sans); font-size: var(--body-lg); color: var(--pewter); }
-.ds-body    { font-family: var(--sans); font-size: var(--body);    color: var(--pewter); }
-.ds-body-sm { font-family: var(--sans); font-size: var(--body-sm); color: var(--pewter); }
+/* ---------- Display (Cormorant 300) ---------- */
+.ds-display-1 { font-family: var(--serif-display); font-weight: var(--w-light); font-size: var(--display-1); line-height: 0.92; letter-spacing: -0.01em; color: var(--fg1); }
+.ds-display-2 { font-family: var(--serif-display); font-weight: var(--w-light); font-size: var(--display-2); line-height: 0.98; letter-spacing: -0.01em; color: var(--fg1); }
+.ds-display-3 { font-family: var(--serif-display); font-weight: var(--w-light); font-size: var(--display-3); line-height: 1.04; color: var(--fg1); }
+.ds-display-4 { font-family: var(--serif-display); font-weight: var(--w-light); font-size: var(--display-4); line-height: 1.1; color: var(--fg1); }
 
+.ds-display-1 em, .ds-display-2 em, .ds-display-3 em, .ds-display-4 em,
+.ds-emotional { font-style: italic; font-weight: var(--w-light); color: var(--accent); }
+
+/* ---------- Headings (Inter) ---------- */
+.ds-h1 { font-family: var(--sans); font-weight: var(--w-semi); font-size: var(--heading-1); line-height: 1.2; letter-spacing: -0.01em; color: var(--fg1); }
+.ds-h2 { font-family: var(--sans); font-weight: var(--w-semi); font-size: var(--heading-2); line-height: 1.3; letter-spacing: -0.005em; color: var(--fg1); }
+
+/* ---------- Body (Inter) ---------- */
+.ds-body-lg { font-family: var(--sans); font-weight: var(--w-reg); font-size: var(--body-lg); line-height: 1.7; color: var(--fg3); }
+.ds-body    { font-family: var(--sans); font-weight: var(--w-reg); font-size: var(--body);    line-height: 1.7; color: var(--fg3); }
+.ds-body-sm { font-family: var(--sans); font-weight: var(--w-reg); font-size: var(--body-sm); line-height: 1.6; color: var(--fg2); }
+
+/* ---------- Botão primário ---------- */
 .ds-btn {
   font-family: var(--sans);
-  font-size: 11px;
-  font-weight: var(--w-med);
-  letter-spacing: 0.18em;
+  font-size: 13px;
+  font-weight: var(--w-semi);
+  letter-spacing: 0.23em;
   text-transform: uppercase;
-  background: var(--champagne);
   color: var(--noir);
+  background: var(--champagne);
   border: none;
-  padding: 16px 32px;
+  border-radius: var(--radius);
+  padding: 24px 64px;
   cursor: pointer;
-  transition: background var(--dur-hover) var(--ease-lux);
+  transition: background var(--dur-hover) var(--ease-lux),
+              color var(--dur-hover) var(--ease-lux);
 }
+.ds-btn:hover { background: var(--bronze); color: var(--marfim); }
+
+/* ---------- Botão ghost ---------- */
 .ds-btn--ghost {
   background: transparent;
   color: var(--marfim);
-  border: 1px solid var(--marfim);
+  border: 1px solid var(--champagne);
 }
+.ds-btn--ghost:hover { background: var(--champagne); color: var(--noir); border-color: var(--champagne); }
 
-.ds-card {
-  background: var(--antracite);
-  border: 1px solid var(--carvao);
-}
-
+/* ---------- Input ---------- */
 .ds-input {
   font-family: var(--sans);
-  font-size: var(--body-sm);
-  background: var(--antracite);
-  border: 1px solid var(--carvao);
+  font-size: var(--body);
   color: var(--marfim);
-  padding: 14px 16px;
-  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--carvao);
+  border-radius: 0;
+  padding: 14px 0;
   outline: none;
   transition: border-color var(--dur-hover) var(--ease-lux);
 }
-.ds-input:focus { border-color: var(--champagne); }
+.ds-input::placeholder { color: var(--pewter); }
+.ds-input:focus { border-bottom-color: var(--champagne); }
+
+/* ---------- Card ---------- */
+.ds-card {
+  background: var(--antracite);
+  border: 1px solid var(--carvao);
+  border-radius: var(--radius);
+}
