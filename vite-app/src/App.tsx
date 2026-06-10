@@ -1,17 +1,30 @@
-// stub — implementação vem na Fase 2
-import React from 'react';
+import React, { useRef } from 'react';
+import { Nav } from './components/layout/Nav';
+import { HomeScreen } from './screens/home/HomeScreen';
+import { PortfolioScreen } from './screens/portfolio/PortfolioScreen';
+import { QuizScreen } from './screens/quiz/QuizScreen';
 
 type Screen = 'home' | 'portfolio' | 'quiz';
 
 export function App() {
   const [screen, setScreen] = React.useState<Screen>('home');
-  const _navigate = (s: string) => setScreen(s as Screen);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const navigate = (s: string) => {
+    setScreen(s as Screen);
+    requestAnimationFrame(() => {
+      if (scrollRef.current) scrollRef.current.scrollTop = 0;
+    });
+  };
 
   return (
-    <div style={{ background: 'var(--noir)', minHeight: '100dvh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <div style={{ color: 'var(--champagne)', fontFamily: 'var(--sans)', fontSize: 12, letterSpacing: '0.18em', textTransform: 'uppercase' }}>
-        THE BEST · Fase 1 scaffolding OK · screen: {screen}
+    <React.Fragment>
+      <Nav current={screen} onNavigate={navigate} />
+      <div data-scroll ref={scrollRef} key={screen}>
+        {screen === 'home'      && <HomeScreen onNavigate={navigate} />}
+        {screen === 'portfolio' && <PortfolioScreen onNavigate={navigate} />}
+        {screen === 'quiz'      && <QuizScreen onNavigate={navigate} />}
       </div>
-    </div>
+    </React.Fragment>
   );
 }
