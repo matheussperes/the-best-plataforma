@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { QuizOption } from '../../data/quizSteps';
+import type { QuizOption } from '../../data/quizData';
 
 interface OptionCardProps {
   opt: QuizOption;
@@ -28,8 +28,10 @@ export function OptionCard({ opt, selected, onClick }: OptionCardProps) {
         fontFamily: 'var(--serif-display)', fontWeight: 300, fontSize: 26,
         lineHeight: 1,
         color: selected ? 'var(--champagne)' : 'var(--marfim)',
-      }}>{opt.t}</span>
-      <span className="ds-body-sm" style={{ color: 'var(--pewter)' }}>{opt.d}</span>
+      }}>{opt.label}</span>
+      {opt.descricao && (
+        <span className="ds-body-sm" style={{ color: 'var(--pewter)' }}>{opt.descricao}</span>
+      )}
     </button>
   );
 }
