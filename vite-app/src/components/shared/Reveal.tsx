@@ -1,4 +1,3 @@
-// stub — implementação vem na Fase 2
 import type { ReactNode, CSSProperties } from 'react';
 
 interface RevealProps {
@@ -7,6 +6,10 @@ interface RevealProps {
   style?: CSSProperties;
 }
 
-export function Reveal(_props: RevealProps) {
-  return null;
+export function Reveal({ children, delay = 0, style }: RevealProps) {
+  return (
+    <div style={{ animation: `revealUp 900ms var(--ease-lux) ${delay}ms both`, ...style }}>
+      {children}
+    </div>
+  );
 }

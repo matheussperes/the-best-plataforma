@@ -1,13 +1,13 @@
-// stub — implementação vem na Fase 2
-import React from 'react';
+import type { ReactNode, CSSProperties } from 'react';
 
 interface ButtonProps {
-  children?: React.ReactNode;
+  children?: ReactNode;
   variant?: 'primary' | 'ghost';
   onClick?: () => void;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
 }
 
-export function Button(_props: ButtonProps) {
-  return null;
+export function Button({ children, variant = 'primary', onClick, style }: ButtonProps) {
+  const cls = variant === 'ghost' ? 'ds-btn ds-btn--ghost' : 'ds-btn';
+  return <button className={cls} style={style} onClick={onClick}>{children}</button>;
 }

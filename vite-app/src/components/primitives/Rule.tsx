@@ -1,11 +1,10 @@
-// stub — implementação vem na Fase 2
-import React from 'react';
+import type { CSSProperties } from 'react';
 
 interface RuleProps {
   w?: number;
-  style?: React.CSSProperties;
+  style?: CSSProperties;
 }
 
-export function Rule(_props: RuleProps) {
-  return null;
+export function Rule({ w = 120, style }: RuleProps) {
+  return <div style={{ height: 1, width: w, background: 'var(--champagne)', ...style }} />;
 }

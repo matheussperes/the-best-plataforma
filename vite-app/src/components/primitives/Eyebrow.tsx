@@ -1,11 +1,10 @@
-// stub — implementação vem na Fase 2
-import React from 'react';
+import type { ReactNode, CSSProperties } from 'react';
 
 interface EyebrowProps {
-  children?: React.ReactNode;
-  style?: React.CSSProperties;
+  children?: ReactNode;
+  style?: CSSProperties;
 }
 
-export function Eyebrow(_props: EyebrowProps) {
-  return null;
+export function Eyebrow({ children, style }: EyebrowProps) {
+  return <div className="ds-eyebrow" style={style}>{children}</div>;
 }
