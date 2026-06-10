@@ -3,24 +3,41 @@ import { makeQuizData } from '../../data/quizData';
 import type { QuizData } from '../../data/quizData';
 import { AberturaScreen } from './AberturaScreen';
 import { AmbienteSelectionScreen } from './AmbienteSelectionScreen';
+import { LoopScreen } from './LoopScreen';
+import type { LoopStep } from './LoopScreen';
 import { ContactScreen } from './ContactScreen';
 
-// Bloco C adicionará: 'loop'
 // Bloco D adicionará: 'loader' | 'retrato'
-type QuizView = 'abertura' | 'selecao' | 'contato' | 'placeholder';
+type QuizView = 'abertura' | 'selecao' | 'loop' | 'contato' | 'placeholder';
+
+interface LoopEntry {
+  ambienteIndex: number;
+  step: LoopStep;
+}
 
 interface QuizScreenProps {
   onNavigate: (screen: string) => void;
 }
 
 export function QuizScreen({ onNavigate }: QuizScreenProps) {
-  const [view, setView] = useState<QuizView>('abertura');
-  const [quizData, setQuizData] = useState<QuizData>(makeQuizData);
+  const [view, setView]           = useState<QuizView>('abertura');
+  const [quizData, setQuizData]   = useState<QuizData>(makeQuizData);
+  const [loopEntry, setLoopEntry] = useState<LoopEntry>({ ambienteIndex: 0, step: 'transicao' });
 
   const handleAmbientesConfirm = (ambientesOrdenados: string[]) => {
     setQuizData(d => ({ ...d, ambientesOrdenados, ambienteAtualIndex: 0 }));
-    // Bloco C substituirá por: setView('loop')
-    setView('contato');
+    setLoopEntry({ ambienteIndex: 0, step: 'transicao' });
+    setView('loop');
+  };
+
+  const handleLoopFinish = () => setView('contato');
+
+  const handleLoopBack = () => setView('selecao');
+
+  const handleContatoBack = () => {
+    const lastIndex = Math.max(0, quizData.ambientesOrdenados.length - 1);
+    setLoopEntry({ ambienteIndex: lastIndex, step: 'conclusao' });
+    setView('loop');
   };
 
   const handleContatoSubmit = (contato: QuizData['contato']) => {
@@ -43,17 +60,30 @@ export function QuizScreen({ onNavigate }: QuizScreenProps) {
     );
   }
 
+  if (view === 'loop') {
+    return (
+      <LoopScreen
+        initialAmbienteIndex={loopEntry.ambienteIndex}
+        initialStep={loopEntry.step}
+        quizData={quizData}
+        onUpdateData={setQuizData}
+        onFinish={handleLoopFinish}
+        onBack={handleLoopBack}
+      />
+    );
+  }
+
   if (view === 'contato') {
     return (
       <ContactScreen
         initialData={quizData.contato}
         onSubmit={handleContatoSubmit}
-        onBack={() => setView('selecao')}
+        onBack={handleContatoBack}
       />
     );
   }
 
-  // Placeholder — substituído no Bloco D (Loader + Retrato)
+  // Placeholder — substituído no Bloco D (Loader + Retrato Emocional)
   return (
     <div style={{
       minHeight: '100dvh', background: 'var(--noir)',
@@ -77,11 +107,13 @@ export function QuizScreen({ onNavigate }: QuizScreenProps) {
         fontFamily: 'var(--serif-display)', fontWeight: 300, fontSize: 32,
         color: 'var(--marfim)', textAlign: 'center', margin: 0,
       }}>
-        Dados recebidos, {quizData.contato.nome.split(' ')[0] || 'obrigado'}.
+        {quizData.contato.nome.split(' ')[0]
+          ? `${quizData.contato.nome.split(' ')[0]}, dados recebidos.`
+          : 'Dados recebidos.'}
       </p>
 
       <p className="ds-body-sm" style={{ color: 'var(--pewter)', textAlign: 'center' }}>
-        Loop por ambiente · Loader · Retrato emocional — em breve (Blocos C e D).
+        Loader · Retrato emocional — em breve (Bloco D).
       </p>
 
       <button

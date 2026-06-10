@@ -5,20 +5,21 @@ interface OptionCardProps {
   opt: QuizOption;
   selected: boolean;
   onClick: () => void;
+  disabled?: boolean;
 }
 
-export function OptionCard({ opt, selected, onClick }: OptionCardProps) {
+export function OptionCard({ opt, selected, onClick, disabled = false }: OptionCardProps) {
   const [hover, setHover] = useState(false);
   return (
     <button
-      onClick={onClick}
-      onMouseEnter={() => setHover(true)}
+      onClick={disabled ? undefined : onClick}
+      onMouseEnter={() => !disabled && setHover(true)}
       onMouseLeave={() => setHover(false)}
       style={{
-        textAlign: 'left', cursor: 'pointer', padding: '22px 24px',
+        textAlign: 'left', cursor: disabled ? 'default' : 'pointer', padding: '22px 24px',
         background: selected ? 'var(--champagne-soft)' : 'var(--antracite)',
-        border: `1px solid ${selected ? 'var(--champagne)' : (hover ? 'var(--pewter)' : 'var(--carvao)')}`,
-        borderRadius: 0,
+        border: `1px solid ${selected ? 'var(--champagne)' : (hover && !disabled ? 'var(--pewter)' : 'var(--carvao)')}`,
+        borderRadius: 0, opacity: disabled ? 0.38 : 1,
         transition: 'all var(--dur-hover) var(--ease-lux)',
         display: 'flex', flexDirection: 'column', gap: 7,
         width: '100%',
