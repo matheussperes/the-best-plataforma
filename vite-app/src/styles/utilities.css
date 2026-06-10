@@ -1,0 +1,57 @@
+/* ============================================================
+   THE BEST — Utility classes (.ds-*)
+   Extraídas do bundle original (Fase 0)
+   Implementação completa vem na Fase 2
+   ============================================================ */
+
+/* placeholder — classes serão expandidas com o CSS completo do bundle na Fase 2 */
+
+.ds-eyebrow {
+  font-family: var(--sans);
+  font-size: var(--eyebrow);
+  font-weight: var(--w-med);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--champagne);
+}
+
+.ds-body-lg { font-family: var(--sans); font-size: var(--body-lg); color: var(--pewter); }
+.ds-body    { font-family: var(--sans); font-size: var(--body);    color: var(--pewter); }
+.ds-body-sm { font-family: var(--sans); font-size: var(--body-sm); color: var(--pewter); }
+
+.ds-btn {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: var(--w-med);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  background: var(--champagne);
+  color: var(--noir);
+  border: none;
+  padding: 16px 32px;
+  cursor: pointer;
+  transition: background var(--dur-hover) var(--ease-lux);
+}
+.ds-btn--ghost {
+  background: transparent;
+  color: var(--marfim);
+  border: 1px solid var(--marfim);
+}
+
+.ds-card {
+  background: var(--antracite);
+  border: 1px solid var(--carvao);
+}
+
+.ds-input {
+  font-family: var(--sans);
+  font-size: var(--body-sm);
+  background: var(--antracite);
+  border: 1px solid var(--carvao);
+  color: var(--marfim);
+  padding: 14px 16px;
+  width: 100%;
+  outline: none;
+  transition: border-color var(--dur-hover) var(--ease-lux);
+}
+.ds-input:focus { border-color: var(--champagne); }

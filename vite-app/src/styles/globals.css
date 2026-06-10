@@ -1,0 +1,25 @@
+/* ============================================================
+   THE BEST — Reset e estilos globais
+   Extraído do bundle original (Fase 0)
+   ============================================================ */
+
+html, body { margin: 0; background: var(--noir); }
+* { box-sizing: border-box; }
+::selection { background: var(--champagne); color: var(--noir); }
+button { font-family: var(--sans); }
+
+#root { min-height: 100dvh; }
+
+[data-scroll] {
+  height: 100dvh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+[data-scroll]::-webkit-scrollbar { width: 8px; }
+[data-scroll]::-webkit-scrollbar-thumb { background: var(--carvao); }
+
+/* ========== Keyframes ========== */
+@keyframes fadeIn  { from { opacity: 0; }                     to { opacity: 1; } }
+@keyframes fadeUp  { from { transform: translateY(18px); }    to { transform: translateY(0); } }
+@keyframes revealUp { from { transform: translateY(26px); }   to { transform: translateY(0); } }

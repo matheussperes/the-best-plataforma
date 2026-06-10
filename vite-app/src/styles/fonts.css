@@ -1,0 +1,16 @@
+/* ============================================================
+   THE BEST — Fontes
+   Fase 3: substituir pelos arquivos woff2 extraídos do bundle,
+   ou manter via Google Fonts CDN (latin-only, mais leve).
+   ============================================================ */
+
+/* Opção A (Fase 3): imports locais dos woff2 extraídos do manifest
+   @font-face { font-family: 'Cormorant Garamond'; ... src: url('/fonts/cormorant-...woff2'); }
+   @font-face { font-family: 'Inter'; ... src: url('/fonts/inter-...woff2'); }
+*/
+
+/* Opção B (alternativa): Google Fonts CDN — apenas latin, ~30 KB total
+   Descomentar no index.html:
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+*/
