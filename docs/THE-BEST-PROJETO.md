@@ -458,20 +458,22 @@ Extensão: 3–4 parágrafos, sem títulos.
 
 ## 7. ARQUITETURA TÉCNICA
 
+> ⚠️ **DECISÃO D20 (09/jun/2026):** Stack migrado de HTML+CSS+JS vanilla para **React + Vite + TypeScript**. A estrutura de arquivos e a stack abaixo refletem o estado atual real do projeto.
+
 ### Stack
 
-| Camada | Tecnologia | Custo |
-|--------|-----------|-------|
-| Frontend | HTML + CSS + JS vanilla | Gratuito |
-| Hosting + deploy | Vercel (Hobby plan) | Gratuito |
-| Banco de dados | Supabase (free tier) | Gratuito |
-| Geração de mensagem | Claude API (claude-haiku) | ~R$20–40/mês |
-| Notificação WhatsApp | Z-API | ~R$97/mês |
-| Tipografia | Google Fonts (Cormorant Garamond + Inter) | Gratuito |
+| Camada | Tecnologia | Status |
+|--------|-----------|--------|
+| Frontend | React 19 + TypeScript + Vite — SPA (3 telas: Home, Portfólio, Quiz) | ✅ Ativo |
+| Hosting + deploy | Vercel (Hobby plan) — build: `vite-app/dist/` | ✅ Ativo |
+| Banco de dados | Supabase (free tier) | ⬜ A criar |
+| Geração de mensagem | Claude API (claude-haiku) — Vercel Function | ⬜ A criar |
+| Notificação WhatsApp | Z-API — Vercel Function | ⬜ A criar |
+| Tipografia | Google Fonts (Cormorant Garamond + Inter) | ✅ Ativo |
 
-**Custo operacional total estimado:** R$117–137/mês (dentro do teto de R$500)
+**Custo operacional estimado (quando ativo):** R$117–137/mês (dentro do teto de R$500)
 
-### Vercel Functions
+### Vercel Functions (a criar — Sessões 12–14)
 
 **`/api/salvar-lead.js`**
 - Entrada: quizData completo (JSON)
@@ -482,6 +484,7 @@ Extensão: 3–4 parágrafos, sem títulos.
 - Entrada: nome, ambientes, cenas, sensorial, prazo
 - Ação: POST para Claude API com prompt dinâmico
 - Saída: `{ mensagem: "..." }`
+- Nota: mock determinístico já implementado em `quiz-retrato.ts`
 
 **`/api/notificar-whatsapp.js`**
 - Entrada: lead completo formatado
@@ -509,36 +512,37 @@ CREATE TABLE leads (
 );
 ```
 
-### Estrutura de arquivos
+### Estrutura de arquivos (estado atual)
 
 ```
 the-best-plataforma/
-├── index.html          ← Home (standalone Designer v1 — commitado 03/jun)
-├── quiz.html           ← O Construtor Emocional™
-├── portfolio.html      ← Portfólio editorial
-├── api/
+├── docs/                        ← documentação do projeto
+│   ├── THE-BEST-PROJETO.md
+│   ├── THE-BEST-STATUS.md
+│   └── Claude.md
+├── vite-app/
+│   ├── public/
+│   │   └── assets/images/       ← fotos dos ambientes (webp/jpg)
+│   └── src/
+│       ├── components/
+│       │   ├── layout/          ← Nav, Footer
+│       │   ├── primitives/      ← Display, Button, Eyebrow, Rule
+│       │   └── shared/          ← Reveal, ProjectCard
+│       ├── data/
+│       │   ├── quizData.ts      ← interfaces + 9 ambientes + factory
+│       │   ├── quiz-calc.ts     ← score + categoria + totalMin/Max
+│       │   ├── quiz-retrato.ts  ← retrato emocional (mock determinístico)
+│       │   └── projects.ts      ← dados do portfólio
+│       ├── hooks/               ← useIsMobile
+│       └── screens/
+│           ├── home/            ← HomeScreen + 5 seções (S03–S06 pendentes)
+│           ├── portfolio/       ← PortfolioScreen + Chip + Lightbox
+│           └── quiz/            ← QuizScreen + 12 sub-telas + LoopScreen
+├── api/                         ← Vercel Functions (a criar — Sessões 12–14)
 │   ├── salvar-lead.js
 │   ├── gerar-mensagem.js
 │   └── notificar-whatsapp.js
-├── assets/
-│   ├── css/
-│   │   ├── design-system.css   ← variáveis CSS globais
-│   │   └── animations.css
-│   ├── js/
-│   │   ├── quiz-state.js       ← estado global quizData
-│   │   ├── quiz-flow.js        ← lógica de navegação
-│   │   └── quiz-calc.js        ← calculadora de investimento
-│   └── Fotos/
-│       ├── Cozinha/            ← 10+ fotos
-│       ├── Closet/
-│       ├── Sala/
-│       ├── Quarto/
-│       ├── Banheiro/
-│       ├── Escritório/
-│       ├── Área Gourmet/
-│       ├── Lavanderia/
-│       └── Outros/             ← vazia (ambiente coringa)
-└── .env                        ← variáveis de ambiente (não commitar)
+└── .env                         ← variáveis de ambiente (não commitar)
 ```
 
 ### Variáveis de ambiente (Vercel)
@@ -570,15 +574,24 @@ ZAPI_PHONE_NUMBER=         ← número dedicado The Best
 
 | Sessão | Tarefa | Status |
 |--------|--------|--------|
-| 8 | quiz.html — 12 telas completas com loop por ambiente | ⬜ |
-| 9 | index.html — Home estrutura semântica completa | ⬜ |
-| 10 | portfolio.html — galeria com filtros por ambiente | ⬜ |
-| 11 | quiz-state.js + quiz-flow.js + quiz-calc.js | ⬜ |
+| 8 | QuizScreen — 12 telas completas com loop por ambiente | ✅ concluído 10/jun |
+| 9 | HomeScreen — 5 de 9 seções implementadas (S03–S06 pendentes) | ⚠️ parcial |
+| 10 | PortfolioScreen — galeria + filtros + lightbox | ✅ concluído |
+| 11 | quizData.ts + quiz-calc.ts + quiz-retrato.ts | ✅ concluído |
 | 12 | /api/salvar-lead.js + Supabase configurado | ⬜ |
-| 13 | /api/gerar-mensagem.js (Claude API) | ⬜ |
+| 13 | /api/gerar-mensagem.js (Claude API) | ⬜ mock pronto |
 | 14 | /api/notificar-whatsapp.js (Z-API) | ⬜ |
 | 15 | Integração completa + testes ponta a ponta | ⬜ |
 | 16 | Domínio + HTTPS + testes mobile | ⬜ |
+
+**Seções da Home pendentes (implementar antes da sessão 15):**
+
+| Seção | Descrição | Status |
+|-------|-----------|--------|
+| S03 | Grid 9 ambientes + hover emocional + click-to-quiz | ⬜ |
+| S04 | O Método — timeline 6 etapas com prazos | ⬜ |
+| S05 | Números com alma (200+, 11 anos, 60 dias, 5 anos) | ⬜ |
+| S06 | Depoimentos | ⬜ |
 
 ### FASE 1C — Refinamento visual (Claude Designer)
 
@@ -607,14 +620,17 @@ ZAPI_PHONE_NUMBER=         ← número dedicado The Best
 
 ---
 
-## 9. DÍVIDAS TÉCNICAS — FASE 1A
+## 9. DÍVIDAS TÉCNICAS
 
-| # | Dívida | Onde resolver | Prioridade |
-|---|--------|--------------|-----------|
-| DT01 | Cards do portfólio — padronizar para quadrado (aspect ratio 1:1) | Claude Designer | Alta |
-| DT02 | Fluxo completo do quiz (12 telas) substituindo o fluxo simplificado atual | Claude Designer | Alta |
-| DT03 | Logo real em SVG/PNG — substituir wordmark tipográfico gerado pelo Designer | Matheus enviar arquivo | Alta |
-| DT04 | Fotos reais The Best no hero e seções da Home (atualmente placeholders) | Claude Designer + GitHub | Média |
+| # | Dívida | Onde resolver | Prioridade | Status |
+|---|--------|--------------|-----------|--------|
+| DT01 | Cards do portfólio — padronizar para quadrado (aspect ratio 1:1) | Claude Designer | Alta | ✅ Resolvido |
+| DT02 | Fluxo completo do quiz (12 telas) substituindo o fluxo simplificado atual | Claude Code | Alta | ✅ Resolvido |
+| DT03 | Logo real em SVG/PNG — substituir wordmark tipográfico gerado pelo Designer | Matheus enviar arquivo | Alta | ⬜ Pendente |
+| DT04 | Fotos reais The Best no hero e seções da Home (atualmente placeholders) | Claude Designer + GitHub | Média | ⬜ Pendente |
+| DT05 | 4 seções ausentes da Home (S03 Ambientes · S04 Método · S05 Números · S06 Depoimentos) | Claude Code | Alta | ⬜ Pendente |
+| DT06 | Arquivos órfãos: quizSteps.ts · ContactStep.tsx · ResultStep.tsx | Claude Code | Baixa | ⬜ Pendente |
+| DT07 | Conteúdo placeholder: e-mail, telefone, nomes de projetos no portfólio | Matheus fornecer dados reais | Média | ⬜ Pendente |
 
 ---
 
@@ -637,22 +653,23 @@ ZAPI_PHONE_NUMBER=         ← número dedicado The Best
 ## 11. CRITÉRIOS DE SUCESSO DA FASE 1
 
 **Obrigatórios:**
-- [ ] Quiz percorrível ponta a ponta com 3+ ambientes em desktop
-- [ ] Quiz funcional em iPhone Safari sem quebra de layout
-- [ ] Total de investimento calculado corretamente
-- [ ] Categoria do lead correta (Essencial/Padrão/Premium/Exclusivo)
-- [ ] Devolução emocional com nome real + 2+ referências às respostas
-- [ ] Briefing chegando no WhatsApp em < 2 minutos após o quiz
-- [ ] Lead salvo no Supabase com todos os campos
-- [ ] Site no ar com domínio próprio e HTTPS
-- [ ] Home carregando em < 3s em 4G
-- [ ] 3 projetos reais publicados no portfólio com CTA funcionando
+- [x] Quiz percorrível ponta a ponta com 3+ ambientes em desktop
+- [x] Total de investimento calculado corretamente
+- [x] Categoria do lead correta (Essencial/Padrão/Premium/Exclusivo)
+- [x] Devolução emocional com referências às respostas (mock determinístico — sem IA)
+- [ ] Devolução emocional com nome real + 2+ referências via Claude API (pendente sessão 13)
+- [ ] Briefing chegando no WhatsApp em < 2 minutos após o quiz (pendente sessão 14)
+- [ ] Lead salvo no Supabase com todos os campos (pendente sessão 12)
+- [ ] Site no ar com domínio próprio e HTTPS (pendente sessão 16)
+- [ ] Quiz funcional em iPhone Safari sem quebra de layout (a testar)
+- [ ] Home carregando em < 3s em 4G (a medir)
+- [ ] 3 projetos reais publicados no portfólio com CTA funcionando (conteúdo placeholder)
 
 **Desejáveis:**
-- [ ] Todos os 9 ambientes com telas completas (mínimo: 5)
+- [x] Todos os 9 ambientes com telas completas no quiz
 - [ ] Cursor customizado em desktop
 - [ ] Parallax do hero sem jank no Chrome e Safari
-- [ ] Portfólio com 5 projetos
+- [ ] Portfólio com 5 projetos reais
 
 ---
 
@@ -693,3 +710,4 @@ ZAPI_PHONE_NUMBER=         ← número dedicado The Best
 | D17 | Logo: providenciar SVG/PNG real para substituir wordmark tipográfico do Designer | 03/jun |
 | D18 | Nova arquitetura: Designer gera referência visual → Code constrói estrutura completa → Designer refina. Fase 1A encerrada após 1C Bloco 1. Sessões 2–7 originais canceladas. | 09/jun |
 | D19 | Textos e copies: refinamento somente após estrutura funcional completa — não antes. | 09/jun |
+| D20 | Stack migrado de HTML+CSS+JS vanilla para React+Vite+TypeScript. Toda a lógica em vite-app/. Deploy via vite-app/dist/. | 09/jun |

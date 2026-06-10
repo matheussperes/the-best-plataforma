@@ -1,9 +1,19 @@
 # THE BEST — STATUS DO PROJETO
 ## Arquivo vivo — atualizar ao fim de cada sessão
 
-> **Última atualização:** 09/jun/2026 — Decisão de arquitetura: Designer → Code → Designer
-> **Fase atual:** 1A encerrada · Iniciando Fase 1B (Claude Code)
-> **Próxima ação:** Sessão 8 — Construção do quiz.html completo no Claude Code
+> **Última atualização:** 10/jun/2026 — Homologação Construtor Emocional v2.0 concluída
+> **Fase atual:** 1B em andamento — Sessões 8–11 concluídas · Sessões 12–16 pendentes
+> **Próxima ação:** Sessão 12 — /api/salvar-lead + Supabase
+
+---
+
+## DECISÃO DE ARQUITETURA (D20) — registrada 09/jun/2026
+
+Stack original (HTML + CSS + JS vanilla) substituído por React + Vite + TypeScript.
+Toda a lógica foi implementada na pasta `vite-app/`.
+O site deploy via Vercel aponta para `vite-app/dist/`.
+Arquivos de referência visual (`index.html`, `Quiz - Construtor Emocional.html`) mantidos
+apenas como referência histórica — não fazem parte do build.
 
 ---
 
@@ -12,10 +22,10 @@
 | Item | Status | Observação |
 |------|--------|-----------|
 | Repositório GitHub criado | ✅ | `matheussperes/the-best-plataforma` |
-| Estrutura de pastas criada | ✅ | /api, /assets/css, /assets/js, /assets/Fotos |
+| Estrutura de pastas criada | ✅ | vite-app/ com src/, public/assets/images/ |
 | Fotos organizadas por ambiente | ✅ | 10+ fotos por ambiente (exceto Outros — vazia) |
-| THE-BEST-PROJETO.md no projeto Claude | ✅ | Atualizado em 09/jun |
-| THE-BEST-STATUS.md no projeto Claude | ✅ | Atualizado em 09/jun |
+| THE-BEST-PROJETO.md no projeto Claude | ✅ | Atualizado em 10/jun |
+| THE-BEST-STATUS.md no projeto Claude | ✅ | Atualizado em 10/jun |
 | Número WhatsApp dedicado The Best | ⬜ | Criar antes de iniciar backend |
 | Domínio registrado | ⬜ | Registrar antes do deploy final |
 | Logo SVG/PNG real | ⬜ | Substituir wordmark tipográfico |
@@ -33,7 +43,6 @@
 **Decisão registrada (D18):** Fase 1A encerrada após 1C Bloco 1.
 As sessões 2–7 originais (blocos do quiz e home por seções) foram canceladas.
 O Claude Code constrói toda a estrutura e lógica. O Designer volta apenas para refinamento visual no final.
-Ver decisão completa na seção de Decisões Registradas do PROJETO.md.
 
 **Assets de referência para o Code:**
 - `index.html` (10.1MB) — Design System vivo: cores, tipografia, componentes, animações
@@ -44,9 +53,12 @@ Ver decisão completa na seção de Decisões Registradas do PROJETO.md.
 | # | Dívida | Status |
 |---|--------|--------|
 | DT01 | Cards portfólio quadrados | ✅ Resolvido em 1B |
-| DT02 | Fluxo completo quiz 12 telas com loop | → Transferido para Code (Sessão 8) |
+| DT02 | Fluxo completo quiz 12 telas com loop | ✅ Resolvido — Sessão 8 |
 | DT03 | Logo real SVG/PNG | ⬜ Pendente — Matheus providenciar |
 | DT04 | Fotos reais The Best | ⬜ Pendente — substituir na fase de refinamento |
+| DT05 | 4 seções ausentes da Home (S03–S06) | ⬜ Próxima prioridade antes da sessão 15 |
+| DT06 | Arquivos órfãos (quizSteps.ts, ContactStep.tsx, ResultStep.tsx) | ⬜ Remover |
+| DT07 | Conteúdo placeholder (contato, projetos) | ⬜ Substituir por dados reais |
 
 ---
 
@@ -54,15 +66,26 @@ Ver decisão completa na seção de Decisões Registradas do PROJETO.md.
 
 | Sessão | Tarefa | Status |
 |--------|--------|--------|
-| 8 | quiz.html completo — 12 telas com loop por ambiente | ⬜ |
-| 9 | index.html (Home) — estrutura semântica completa | ⬜ |
-| 10 | portfolio.html — galeria com filtros | ⬜ |
-| 11 | quiz-state.js + quiz-flow.js + quiz-calc.js | ⬜ |
+| 8 | QuizScreen — 12 telas com loop por ambiente | ✅ concluído 10/jun |
+| 9 | HomeScreen — 5 de 9 seções implementadas | ⚠️ parcial — 4 seções pendentes |
+| 10 | PortfolioScreen — galeria + filtros + lightbox | ✅ concluído |
+| 11 | quizData.ts + quiz-calc.ts + quiz-retrato.ts | ✅ concluído |
 | 12 | /api/salvar-lead.js + Supabase configurado | ⬜ |
-| 13 | /api/gerar-mensagem.js (Claude API) | ⬜ |
+| 13 | /api/gerar-mensagem.js (Claude API) | ⬜ mock pronto |
 | 14 | /api/notificar-whatsapp.js (Z-API) | ⬜ |
 | 15 | Integração completa + testes ponta a ponta | ⬜ |
 | 16 | Domínio + HTTPS + testes mobile | ⬜ |
+
+---
+
+## HOME — SEÇÕES PENDENTES (implementar antes da sessão 15)
+
+| Seção | Descrição | Status |
+|-------|-----------|--------|
+| S03 | Grid 9 ambientes + hover emocional + click-to-quiz | ⬜ |
+| S04 | O Método — timeline 6 etapas com prazos | ⬜ |
+| S05 | Números com alma (200+, 11 anos, 60 dias, 5 anos) | ⬜ |
+| S06 | Depoimentos | ⬜ |
 
 ---
 
@@ -100,20 +123,20 @@ Ver decisão completa na seção de Decisões Registradas do PROJETO.md.
 
 | Tela | Descrição | Visual | Funcional |
 |------|-----------|--------|-----------|
-| 1 | Abertura — "Vamos imaginar juntos?" | ✅ | ⬜ |
-| 2 | Seleção de ambientes (grid 9 cards) | ✅ | ⬜ |
-| 3 | Transição — "Sua [ambiente]." | ✅ | ⬜ |
-| 4 | Identidade — 4 estilos | ✅ | ⬜ |
-| 5 | Cenas/Atmosfera | ✅ | ⬜ |
-| 6 | Inegociável | ✅ | ⬜ |
-| 7 | Memória sensorial | ✅ | ⬜ |
-| 8 | Investimento — 8 faixas | ✅ | ⬜ |
-| 9 | Conclusão do ambiente | ⬜ | ⬜ |
-| 10 | Contato — dados do cliente | ⬜ | ⬜ |
-| 11 | Loader cinematográfico | ⬜ | ⬜ |
-| 12 | Retrato emocional — devolução por IA | ⬜ | ⬜ |
+| 1 | Abertura — "Vamos imaginar juntos?" | ✅ | ✅ |
+| 2 | Seleção de ambientes (grid 9 cards) | ✅ | ✅ |
+| 3 | Transição — "Sua [ambiente]." | ✅ | ✅ |
+| 4 | Identidade — 4 estilos | ✅ | ✅ |
+| 5 | Cenas/Atmosfera | ✅ | ✅ |
+| 6 | Inegociável | ✅ | ✅ |
+| 7 | Memória sensorial | ✅ | ✅ |
+| 8 | Investimento — 8 faixas | ✅ | ✅ |
+| 9 | Conclusão do ambiente | ✅ | ✅ |
+| 10 | Contato — dados do cliente | ✅ | ✅ |
+| 11 | Loader cinematográfico | ✅ | ✅ |
+| 12 | Retrato emocional — mock determinístico (IA na sessão 13) | ✅ | ✅ |
 
-*Loop por ambiente: ⬜ a ser implementado no Code (Sessão 8)*
+*Loop por ambiente: ✅ implementado como LoopScreen.tsx*
 
 ---
 
@@ -130,7 +153,7 @@ Ver decisão completa na seção de Decisões Registradas do PROJETO.md.
 | Fotos Área Gourmet | ✅ 10+ fotos |
 | Fotos Lavanderia | ✅ 10+ fotos |
 | Fotos Outros | ⬜ Vazia (ambiente coringa — ok) |
-| 3 projetos reais para portfólio | ⬜ Organizar |
+| 3 projetos reais para portfólio | ⬜ Organizar (portfólio atual usa placeholders) |
 | Logo SVG/PNG | ⬜ Providenciar |
 
 ---
@@ -148,6 +171,13 @@ Ver decisão completa na seção de Decisões Registradas do PROJETO.md.
 | 4 | 09/jun | Designer | 1B: Cards portfólio quadrados — resolvido |
 | 5 | 09/jun | Designer | 1C Bloco 1: Quiz 3 telas visuais — commitado |
 | 6 | 09/jun | Chat | Decisão D18: nova arquitetura Designer→Code→Designer. Fase 1A encerrada. |
+| 7 | 09/jun | Code | Migração React+Vite+TS: HomeScreen, PortfolioScreen, QuizScreen (3 telas iniciais) |
+| 8 | 10/jun | Code | Bloco A: quizData.ts + quiz-calc.ts — dados e cálculos do quiz |
+| 9 | 10/jun | Code | Bloco B: AberturaScreen + AmbienteSelectionScreen + ContactScreen |
+| 10 | 10/jun | Code | Bloco C: loop por ambiente (LoopScreen + 7 sub-telas) |
+| 11 | 10/jun | Code | Bloco D: LoaderScreen + quiz-retrato.ts + RetratoScreen |
+| 12 | 10/jun | Code | Push para GitHub + Homologação do Construtor Emocional v2.0 |
+| 13 | 10/jun | Code | Auditoria de migração + atualização da documentação |
 
 ---
 
@@ -156,33 +186,38 @@ Ver decisão completa na seção de Decisões Registradas do PROJETO.md.
 ```
 Projeto: THE BEST Plataforma Digital
 Fase atual: 1B — Lógica e Backend (Claude Code)
-Próxima sessão: 8 — quiz.html completo com 12 telas e loop por ambiente
+Próxima sessão: 12 — /api/salvar-lead + Supabase
 GitHub: matheussperes/the-best-plataforma
 Site no ar: the-best-plataforma.vercel.app
 
-ARQUIVOS DE REFERÊNCIA PARA O CODE:
-- index.html (10.1MB) — Design System vivo
-- Quiz - Construtor Emocional.html — 3 telas visuais do quiz
+STACK ATUAL: React + Vite + TypeScript (vite-app/)
+NÃO É MAIS HTML+JS VANILLA.
 
-FASE 1A ENCERRADA:
-- Design System v2 ✅
-- Cards portfólio quadrados ✅
-- Quiz 3 telas visuais (Bloco 1) ✅
+SESSÕES CONCLUÍDAS:
+- Sessão 8: QuizScreen — 12 telas + loop por ambiente ✅
+- Sessão 9: HomeScreen — 5 de 9 seções (S03–S06 pendentes) ⚠️
+- Sessão 10: PortfolioScreen — galeria + filtros + lightbox ✅
+- Sessão 11: quizData.ts + quiz-calc.ts + quiz-retrato.ts ✅
+
+SEÇÕES DA HOME PENDENTES (antes da sessão 15):
+- S03: Grid 9 ambientes com hover + click-to-quiz
+- S04: O Método (timeline 6 etapas)
+- S05: Números com alma
+- S06: Depoimentos
 
 FASE 1B — PENDENTE (em ordem):
-- Sessão 8: quiz.html — 12 telas + loop por ambiente
-- Sessão 9: index.html — Home estrutura semântica
-- Sessão 10: portfolio.html
-- Sessão 11: arquivos JS (state, flow, calc)
-- Sessão 12: /api/salvar-lead.js + Supabase
-- Sessão 13: /api/gerar-mensagem.js
-- Sessão 14: /api/notificar-whatsapp.js
-- Sessão 15: integração completa
-- Sessão 16: domínio + testes
+- Sessão 12: /api/salvar-lead + Supabase
+- Sessão 13: /api/gerar-mensagem (Claude API — mock determinístico já existe)
+- Sessão 14: /api/notificar-whatsapp (Z-API)
+- Sessão 15: integração completa + testes
+- Sessão 16: domínio + HTTPS + testes mobile
 
 DÍVIDAS PENDENTES:
 - DT03: Logo real SVG/PNG (Matheus providenciar)
 - DT04: Fotos reais The Best (substituir na fase R)
+- DT05: 4 seções ausentes da Home
+- DT06: Remover arquivos órfãos (quizSteps.ts, ContactStep.tsx, ResultStep.tsx)
+- DT07: Substituir conteúdo placeholder (contato, projetos)
 
 INFRAESTRUTURA:
 - Vercel: ✅ ativo
