@@ -1,14 +1,18 @@
 import { useState } from 'react';
 import { makeQuizData } from '../../data/quizData';
 import type { QuizData } from '../../data/quizData';
+import { finalizarQuizData } from '../../data/quiz-calc';
+import { gerarRetrato } from '../../data/quiz-retrato';
+import type { RetratoEmocional } from '../../data/quiz-retrato';
 import { AberturaScreen } from './AberturaScreen';
 import { AmbienteSelectionScreen } from './AmbienteSelectionScreen';
 import { LoopScreen } from './LoopScreen';
 import type { LoopStep } from './LoopScreen';
 import { ContactScreen } from './ContactScreen';
+import { LoaderScreen } from './LoaderScreen';
+import { RetratoScreen } from './RetratoScreen';
 
-// Bloco D adicionará: 'loader' | 'retrato'
-type QuizView = 'abertura' | 'selecao' | 'loop' | 'contato' | 'placeholder';
+type QuizView = 'abertura' | 'selecao' | 'loop' | 'contato' | 'loader' | 'retrato';
 
 interface LoopEntry {
   ambienteIndex: number;
@@ -23,6 +27,7 @@ export function QuizScreen({ onNavigate }: QuizScreenProps) {
   const [view, setView]           = useState<QuizView>('abertura');
   const [quizData, setQuizData]   = useState<QuizData>(makeQuizData);
   const [loopEntry, setLoopEntry] = useState<LoopEntry>({ ambienteIndex: 0, step: 'transicao' });
+  const [retrato, setRetrato]     = useState<RetratoEmocional | null>(null);
 
   const handleAmbientesConfirm = (ambientesOrdenados: string[]) => {
     setQuizData(d => ({ ...d, ambientesOrdenados, ambienteAtualIndex: 0 }));
@@ -41,10 +46,14 @@ export function QuizScreen({ onNavigate }: QuizScreenProps) {
   };
 
   const handleContatoSubmit = (contato: QuizData['contato']) => {
-    setQuizData(d => ({ ...d, contato }));
-    // Bloco D substituirá por: setView('loader')
-    setView('placeholder');
+    // Finaliza todos os campos calculados (totalMin, totalMax, categoria, score)
+    const finalizado = finalizarQuizData({ ...quizData, contato });
+    setQuizData(finalizado);
+    setRetrato(gerarRetrato(finalizado));
+    setView('loader');
   };
+
+  const handleLoaderComplete = () => setView('retrato');
 
   if (view === 'abertura') {
     return <AberturaScreen onStart={() => setView('selecao')} />;
@@ -83,45 +92,20 @@ export function QuizScreen({ onNavigate }: QuizScreenProps) {
     );
   }
 
-  // Placeholder — substituído no Bloco D (Loader + Retrato Emocional)
-  return (
-    <div style={{
-      minHeight: '100dvh', background: 'var(--noir)',
-      display: 'flex', alignItems: 'center', justifyContent: 'center',
-      flexDirection: 'column', gap: 24, padding: '40px 24px',
-    }}>
-      <div style={{
-        display: 'inline-flex', alignItems: 'center', gap: 8,
-        border: '1px solid var(--champagne)', padding: '8px 14px',
-      }}>
-        <span style={{ width: 4, height: 4, background: 'var(--champagne)', borderRadius: '50%' }} />
-        <span style={{
-          fontFamily: 'var(--sans)', fontSize: 10, letterSpacing: '0.24em',
-          textTransform: 'uppercase', color: 'var(--champagne)',
-        }}>
-          O Construtor Emocional™
-        </span>
-      </div>
+  if (view === 'loader') {
+    return <LoaderScreen onComplete={handleLoaderComplete} />;
+  }
 
-      <p style={{
-        fontFamily: 'var(--serif-display)', fontWeight: 300, fontSize: 32,
-        color: 'var(--marfim)', textAlign: 'center', margin: 0,
-      }}>
-        {quizData.contato.nome.split(' ')[0]
-          ? `${quizData.contato.nome.split(' ')[0]}, dados recebidos.`
-          : 'Dados recebidos.'}
-      </p>
+  if (view === 'retrato' && retrato) {
+    return (
+      <RetratoScreen
+        quizData={quizData}
+        retrato={retrato}
+        onNavigate={onNavigate}
+      />
+    );
+  }
 
-      <p className="ds-body-sm" style={{ color: 'var(--pewter)', textAlign: 'center' }}>
-        Loader · Retrato emocional — em breve (Bloco D).
-      </p>
-
-      <button
-        className="ds-btn ds-btn--ghost"
-        onClick={() => onNavigate('home')}
-      >
-        Voltar ao início
-      </button>
-    </div>
-  );
+  // Fallback de segurança — não deve ser atingido em fluxo normal
+  return null;
 }
