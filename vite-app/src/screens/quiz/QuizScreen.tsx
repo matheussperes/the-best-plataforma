@@ -47,7 +47,11 @@ export function QuizScreen({ onNavigate }: QuizScreenProps) {
       ? { ...makeQuizData(), ambientesOrdenados: ambs, ambienteAtualIndex: 0 }
       : makeQuizData();
   });
-  const [loopEntry, setLoopEntry] = useState<LoopEntry>({ ambienteIndex: 0, step: 'transicao' });
+  // Quando vem da Home (seleção prévia), pula a transição e abre direto em Identidade
+  const [loopEntry, setLoopEntry] = useState<LoopEntry>(() => ({
+    ambienteIndex: 0,
+    step: readHomeSelecao() ? 'identidade' : 'transicao',
+  }));
   const [retrato, setRetrato]     = useState<RetratoEmocional | null>(null);
 
   const handleAmbientesConfirm = (ambientesOrdenados: string[]) => {
