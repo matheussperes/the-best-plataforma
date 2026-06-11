@@ -1,10 +1,10 @@
 # THE BEST — PLATAFORMA DIGITAL
 ## Documento Mestre do Projeto
 
-> **Versão:** 3.0 — Pós-Sessão 1 (Design System gerado)
+> **Versão:** 4.0 — Pós-Sessão 13 (Migração React concluída · Construtor Emocional v2.0 homologado)
 > **Data:** Junho 2026
 > **Responsável:** Matheus — Fundador / The Best
-> **Status geral:** Fase 1A em andamento — Design System v1 commitado
+> **Status geral:** Fase 1B em andamento — Sessões 8–11 concluídas · Sessões 12–16 pendentes
 
 ---
 
@@ -148,21 +148,26 @@ Empresários, executivos C-level, médicos, arquitetos e profissionais liberais 
 
 ---
 
-## 4. ESTRUTURA DO SITE (7 páginas)
+## 4. ESTRUTURA DO SITE (7 telas)
 
-| Página | Arquivo | Descrição |
-|--------|---------|-----------|
-| Home | index.html | Site editorial completo — 9 seções |
-| Quiz | quiz.html | O Construtor Emocional™ |
-| Portfólio | portfolio.html | Curadoria editorial de projetos |
-| O Método | metodo.html | Educação aprofundada do processo — Fase 2 |
-| A Casa | sobre.html | Sobre nós em formato narrativo — Fase 2 |
-| Conversar | contato.html | Contato direto — Fase 2 |
-| Conta The Best | conta.html | Área logada do cliente — Fase 2 |
+> Stack atual: React SPA — telas roteadas via estado em `App.tsx`, não por arquivos HTML separados.
+
+| Tela | Componente | Descrição | Status |
+|------|-----------|-----------|--------|
+| Home | `HomeScreen` | Site editorial — 5 de 9 seções implementadas | ⚠️ parcial |
+| Quiz | `QuizScreen` | O Construtor Emocional™ — 12 telas | ✅ |
+| Portfólio | `PortfolioScreen` | Galeria com filtros por ambiente e lightbox | ✅ |
+| O Método | — | Educação aprofundada do processo | Fase 2 |
+| A Casa | — | Sobre nós em formato narrativo | Fase 2 |
+| Conversar | — | Contato direto | Fase 2 |
+| Conta The Best | — | Área logada do cliente | Fase 2 |
 
 ---
 
-## 5. HOME — INDEX.HTML (9 seções)
+## 5. HOME — HOMESCREEN (9 seções)
+
+> **Implementado:** S01 Hero · S02 Manifesto · S07 PortfolioTeaser · S08 CTAStrip · S09 Footer
+> **Pendente (DT05):** S03 Ambientes · S04 O Método · S05 Números com Alma · S06 Depoimentos
 
 ### Seção 01 — HERO IMERSIVO
 - Foto real do projeto The Best + animação CSS generativa (cortinas de luz Champagne)
@@ -230,9 +235,11 @@ Logo THE BEST · Campinas, SP · WhatsApp · Instagram · Email
 
 ---
 
-## 6. O CONSTRUTOR EMOCIONAL™ — QUIZ.HTML
+## 6. O CONSTRUTOR EMOCIONAL™ — QUIZSCREEN
 
-### Fluxo completo do quiz (versão definitiva — 03/jun/2026)
+> ✅ **Implementado em React** — Construtor Emocional™ v2.0 concluído em 10/jun/2026. Todas as 12 telas estão funcionais. Retrato emocional gerado por mock determinístico (`quiz-retrato.ts`). Integração com Claude API prevista na Sessão 13.
+
+### Fluxo completo do quiz (versão implementada — 10/jun/2026)
 
 ```
 TELA 1 — Provocação / Abertura
@@ -296,9 +303,7 @@ Baseada nos ambientes, cenas, sons e estilo escolhidos.
 
 **Tempo estimado:** 8 minutos (média). Varia: 3 min (1 ambiente) a 15 min (todos os ambientes).
 
-**Lógica de ordem dos ambientes:** segue a ordem em que o cliente clicou na tela de seleção.
-
-**Estado atual no Designer:** fluxo simplificado (Sensação → Ambiente → Paleta → Contato). O fluxo completo acima é a **dívida técnica prioritária da Fase 1A** — implementar no Designer em sessão dedicada.
+**Lógica de ordem dos ambientes:** segue a ordem em que o cliente clicou na tela de seleção — implementada via `ambientesOrdenados: string[]` no `QuizData`.
 
 ### Os 9 Ambientes com nomes emocionais
 
@@ -675,15 +680,17 @@ ZAPI_PHONE_NUMBER=         ← número dedicado The Best
 
 ## 12. ALERTAS CRÍTICOS
 
-1. **Export obrigatório:** Nunca fechar o Designer sem o HTML baixado e commitado no GitHub. O Designer não salva entre sessões.
+1. **Commit por bloco:** Sempre commitar ao final de cada bloco de implementação. Nunca acumular mais de uma sessão no mesmo commit. Gerar relatório antes do commit.
 
-2. **Trabalhar por bloco:** Pedir 1–2 ajustes por prompt no Designer para evitar timeout ou erro de bundle.
+2. **Trabalhar em etapas pequenas:** Não iniciar próxima sessão sem aprovação explícita da anterior. Nenhuma sessão inicia automaticamente.
 
-3. **Testar mobile antes de avançar:** O cliente-alvo pesquisa no iPhone.
+3. **Testar mobile antes de avançar:** O cliente-alvo pesquisa no iPhone. Testar em Safari iOS antes de marcar qualquer sessão como concluída.
 
-4. **Nunca lançar tráfego pago** antes das 3 APIs estarem funcionando (/api/salvar-lead + /api/gerar-mensagem + /api/notificar-whatsapp).
+4. **Nunca lançar tráfego pago** antes das 3 APIs estarem funcionando (`/api/salvar-lead` + `/api/gerar-mensagem` + `/api/notificar-whatsapp`).
 
 5. **Número dedicado:** Usar número WhatsApp exclusivo para The Best — nunca o número pessoal de Matheus.
+
+> *Alertas 1 e 2 da versão anterior (export do Designer, ajustes por prompt) eram específicos ao workflow Claude Designer e foram substituídos pelos alertas acima, válidos para o workflow Claude Code + React.*
 
 ---
 
@@ -697,7 +704,7 @@ ZAPI_PHONE_NUMBER=         ← número dedicado The Best
 | D04 | Faixas de investimento: 8 faixas de R$5k a "Projeto sem limites", com rótulos aspiracionais | 25/mai |
 | D05 | Devolução emocional: gerada por Claude API com prompt dinâmico | 25/mai |
 | D06 | Notificação: Z-API com número dedicado The Best | 25/mai |
-| D07 | Stack: HTML + CSS + JS vanilla + Vercel + Supabase (sem frameworks) | 27/mai |
+| D07 | ~~Stack: HTML + CSS + JS vanilla + Vercel + Supabase (sem frameworks)~~ — supersedido por D20 | 27/mai |
 | D08 | Workflow: Designer (visual) + Code (lógica) em sessões separadas | 27/mai |
 | D09 | Trilha sonora: rejeitada definitivamente | 25/mai |
 | D10 | AR: arquivada para reavaliação em 12–18 meses | 25/mai |
