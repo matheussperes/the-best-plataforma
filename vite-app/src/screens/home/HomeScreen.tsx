@@ -1,6 +1,7 @@
 import { Footer } from '../../components/layout/Footer';
 import { Hero } from './Hero';
 import { Manifesto } from './Manifesto';
+import { AmbientesSection } from './AmbientesSection';
 import { PortfolioTeaser } from './PortfolioTeaser';
 import { QuoteSection } from './QuoteSection';
 import { CTAStrip } from './CTAStrip';
@@ -14,6 +15,7 @@ export function HomeScreen({ onNavigate }: HomeScreenProps) {
     <div>
       <Hero onNavigate={onNavigate} />
       <Manifesto />
+      <AmbientesSection onNavigate={onNavigate} />
       <PortfolioTeaser onNavigate={onNavigate} />
       <QuoteSection />
       <CTAStrip onNavigate={onNavigate} />
