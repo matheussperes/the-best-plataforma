@@ -23,9 +23,30 @@ interface QuizScreenProps {
   onNavigate: (screen: string) => void;
 }
 
+// Lê a pré-seleção feita na Home sem removê-la (leitura idempotente).
+// A remoção é responsabilidade dos outros pontos de entrada do quiz (Hero, Nav, CTAStrip, Footer).
+function readHomeSelecao(): string[] | null {
+  try {
+    const raw = sessionStorage.getItem('quiz_home_selecao');
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as { ambientesOrdenados: string[] };
+    if (Array.isArray(parsed.ambientesOrdenados) && parsed.ambientesOrdenados.length > 0) {
+      return parsed.ambientesOrdenados;
+    }
+  } catch { /* ignore */ }
+  return null;
+}
+
 export function QuizScreen({ onNavigate }: QuizScreenProps) {
-  const [view, setView]           = useState<QuizView>('abertura');
-  const [quizData, setQuizData]   = useState<QuizData>(makeQuizData);
+  const [view, setView] = useState<QuizView>(() =>
+    readHomeSelecao() ? 'loop' : 'abertura'
+  );
+  const [quizData, setQuizData] = useState<QuizData>(() => {
+    const ambs = readHomeSelecao();
+    return ambs
+      ? { ...makeQuizData(), ambientesOrdenados: ambs, ambienteAtualIndex: 0 }
+      : makeQuizData();
+  });
   const [loopEntry, setLoopEntry] = useState<LoopEntry>({ ambienteIndex: 0, step: 'transicao' });
   const [retrato, setRetrato]     = useState<RetratoEmocional | null>(null);
 

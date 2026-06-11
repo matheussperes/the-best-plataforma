@@ -26,7 +26,7 @@ export function CTAStrip({ onNavigate }: CTAStripProps) {
       }}>
         <Button
           style={isMobile ? { width: '100%', padding: '18px 24px' } : undefined}
-          onClick={() => onNavigate('quiz')}
+          onClick={() => { sessionStorage.removeItem('quiz_home_selecao'); onNavigate('quiz'); }}
         >Iniciar o Construtor</Button>
         <Button
           variant="ghost"

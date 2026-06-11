@@ -28,7 +28,11 @@ export function Nav({ current, onNavigate }: NavProps) {
     return () => scroller.removeEventListener('scroll', onScroll);
   }, [current]);
 
-  const nav = (id: string) => { setMenuOpen(false); onNavigate(id); };
+  const nav = (id: string) => {
+    setMenuOpen(false);
+    if (id === 'quiz') sessionStorage.removeItem('quiz_home_selecao');
+    onNavigate(id);
+  };
 
   const navBg     = (solid || menuOpen) ? 'rgba(14,15,17,0.96)' : 'transparent';
   const navBlur   = (solid || menuOpen) ? 'blur(14px)' : 'none';

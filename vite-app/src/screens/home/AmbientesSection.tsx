@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useIsMobile } from '../../hooks/useIsMobile';
 import { Eyebrow } from '../../components/primitives/Eyebrow';
 import { Display } from '../../components/primitives/Display';
+import { Button } from '../../components/primitives/Button';
 import { Reveal } from '../../components/shared/Reveal';
 import { AMBIENTES } from '../../data/quizData';
 import imgCozinha01 from '/assets/images/imgCozinha01.webp';
@@ -43,22 +44,36 @@ const HOVER_FRASE: Record<string, string> = {
 
 const PRINCIPAIS = AMBIENTES.filter(a => a.id !== 'outro');
 const OUTRO = AMBIENTES.find(a => a.id === 'outro')!;
-
-function navigateToQuiz(ambienteId: string | null, onNavigate: (s: string) => void) {
-  // Hook para futura pré-seleção — QuizScreen lê quiz_ambiente_preselecao (Sessão 12+)
-  if (ambienteId) {
-    sessionStorage.setItem('quiz_ambiente_preselecao', ambienteId);
-  } else {
-    sessionStorage.removeItem('quiz_ambiente_preselecao');
-  }
-  onNavigate('quiz');
-}
+const TODOS_IDS = AMBIENTES.map(a => a.id);
 
 export function AmbientesSection({ onNavigate }: AmbientesSectionProps) {
   const isMobile = useIsMobile();
-  const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [hoveredId, setHoveredId]     = useState<string | null>(null);
 
-  const cardHeight = isMobile ? 200 : 190;
+  const toggle = (id: string) => {
+    setSelectedIds(prev =>
+      prev.includes(id) ? prev.filter(s => s !== id) : [...prev, id]
+    );
+  };
+
+  const toggleTodos = () => {
+    setSelectedIds(prev =>
+      prev.length === TODOS_IDS.length ? [] : TODOS_IDS
+    );
+  };
+
+  const handleContinuar = () => {
+    if (selectedIds.length === 0) return;
+    // Persiste a seleção para QuizScreen iniciar direto na Tela 3 (LoopScreen)
+    // QuizScreen lê quiz_home_selecao nos lazy initializers (leitura sem side-effect)
+    // Outros pontos de entrada do quiz (Hero, Nav, etc.) limpam esta chave antes de navegar
+    sessionStorage.setItem('quiz_home_selecao', JSON.stringify({ ambientesOrdenados: selectedIds }));
+    onNavigate('quiz');
+  };
+
+  const todosSelected = selectedIds.length === TODOS_IDS.length;
+  const canContinue   = selectedIds.length > 0;
 
   return (
     <section style={{
@@ -73,10 +88,7 @@ export function AmbientesSection({ onNavigate }: AmbientesSectionProps) {
       }}>
 
         {/* ── Coluna esquerda — contexto ── */}
-        <div style={{
-          flexShrink: 0,
-          width: isMobile ? '100%' : 260,
-        }}>
+        <div style={{ flexShrink: 0, width: isMobile ? '100%' : 260 }}>
           <Reveal>
             <Eyebrow style={{ marginBottom: 24 }}>O Construtor Emocional™</Eyebrow>
             <Display size={isMobile ? 40 : 52} style={{ lineHeight: 1.1 }}>
@@ -108,13 +120,13 @@ export function AmbientesSection({ onNavigate }: AmbientesSectionProps) {
               flexDirection: isMobile ? 'column' : 'row',
               justifyContent: 'space-between',
               gap: 16,
-              marginBottom: 20,
+              marginBottom: 14,
             }}>
               <Display size={isMobile ? 28 : 36} style={{ lineHeight: 1.15 }}>
                 Quais ambientes você *sonha* em transformar?
               </Display>
               <button
-                onClick={() => navigateToQuiz(null, onNavigate)}
+                onClick={toggleTodos}
                 style={{
                   flexShrink: 0,
                   background: 'none',
@@ -122,26 +134,26 @@ export function AmbientesSection({ onNavigate }: AmbientesSectionProps) {
                   cursor: 'pointer',
                   fontFamily: 'var(--sans)',
                   fontSize: 11,
-                  fontWeight: 600,
-                  letterSpacing: '0.22em',
+                  fontWeight: 500,
+                  letterSpacing: '0.18em',
                   textTransform: 'uppercase',
-                  color: 'var(--champagne)',
-                  paddingBottom: 4,
-                  borderBottom: '1px solid var(--champagne)',
+                  color: todosSelected ? 'var(--champagne)' : 'var(--pewter)',
+                  padding: 0,
                   whiteSpace: 'nowrap',
+                  transition: 'color 300ms var(--ease-lux)',
                 }}
               >
-                Selecionar todos →
+                {todosSelected ? '✕ Desmarcar todos' : '+ Selecionar todos'}
               </button>
             </div>
             <p style={{
               fontFamily: 'var(--sans)',
               fontSize: 13,
               color: 'var(--pewter)',
-              margin: '0 0 24px',
+              margin: '0 0 20px',
               lineHeight: 1.6,
             }}>
-              A sessão em que você define a sequência do seu briefing.
+              A ordem em que você clicar define a sequência do seu briefing.
             </p>
           </Reveal>
 
@@ -149,28 +161,34 @@ export function AmbientesSection({ onNavigate }: AmbientesSectionProps) {
           <div style={{
             display: 'grid',
             gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)',
-            gap: 8,
+            gap: isMobile ? 10 : 8,
           }}>
             {PRINCIPAIS.map((amb, i) => {
-              const image = AMBIENTE_IMAGE[amb.id] ?? null;
-              const frase = HOVER_FRASE[amb.id];
-              const hovered = hoveredId === amb.id;
+              const image      = AMBIENTE_IMAGE[amb.id] ?? null;
+              const frase      = HOVER_FRASE[amb.id];
+              const isSelected = selectedIds.includes(amb.id);
+              const order      = selectedIds.indexOf(amb.id) + 1;
+              const isHovered  = hoveredId === amb.id && !isSelected;
 
               return (
                 <Reveal key={amb.id} delay={i * 40}>
-                  <div
-                    role="button"
-                    tabIndex={0}
-                    onClick={() => navigateToQuiz(amb.id, onNavigate)}
-                    onKeyDown={e => e.key === 'Enter' && navigateToQuiz(amb.id, onNavigate)}
+                  <button
+                    onClick={() => toggle(amb.id)}
                     onMouseEnter={() => setHoveredId(amb.id)}
                     onMouseLeave={() => setHoveredId(null)}
+                    aria-pressed={isSelected}
+                    aria-label={amb.nomeEmocional}
                     style={{
                       position: 'relative',
-                      height: cardHeight,
+                      width: '100%',
+                      height: isMobile ? 200 : 190,
                       overflow: 'hidden',
                       cursor: 'pointer',
+                      border: `2px solid ${isSelected ? 'var(--champagne)' : 'transparent'}`,
                       background: 'var(--antracite)',
+                      padding: 0,
+                      borderRadius: 0,
+                      transition: 'border-color 300ms var(--ease-lux)',
                       outline: 'none',
                     }}
                   >
@@ -178,7 +196,7 @@ export function AmbientesSection({ onNavigate }: AmbientesSectionProps) {
                     {image && (
                       <img
                         src={image}
-                        alt={amb.nomeSimples}
+                        alt=""
                         loading={i < 4 ? 'eager' : 'lazy'}
                         style={{
                           position: 'absolute',
@@ -186,132 +204,219 @@ export function AmbientesSection({ onNavigate }: AmbientesSectionProps) {
                           width: '100%',
                           height: '100%',
                           objectFit: 'cover',
-                          transform: hovered ? 'scale(1.06)' : 'scale(1)',
-                          transition: 'transform 700ms var(--ease-lux)',
+                          filter: `saturate(.8) ${isSelected ? 'brightness(.7)' : 'brightness(.55)'}`,
+                          transform: isHovered ? 'scale(1.05)' : 'scale(1)',
+                          transition: 'filter 400ms var(--ease-lux), transform 700ms var(--ease-lux)',
                         }}
                       />
                     )}
 
-                    {/* Gradiente permanente */}
+                    {/* Gradiente base */}
                     <div style={{
                       position: 'absolute',
                       inset: 0,
-                      background: 'linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.1) 55%, transparent 100%)',
+                      background: 'linear-gradient(180deg, rgba(14,15,17,0) 30%, rgba(14,15,17,.85) 100%)',
                     }} />
 
-                    {/* Overlay hover com frase emocional */}
-                    <div style={{
-                      position: 'absolute',
-                      inset: 0,
-                      background: 'rgba(14,15,17,0.75)',
-                      opacity: hovered ? 1 : 0,
-                      transition: 'opacity 380ms var(--ease-lux)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      padding: 20,
-                    }}>
-                      <p style={{
-                        fontFamily: 'var(--serif-display)',
-                        fontWeight: 300,
-                        fontStyle: 'italic',
-                        fontSize: 16,
-                        color: 'var(--champagne)',
-                        textAlign: 'center',
-                        lineHeight: 1.45,
-                        transform: hovered ? 'translateY(0)' : 'translateY(8px)',
-                        transition: 'transform 420ms var(--ease-lux)',
-                        margin: 0,
-                      }}>
-                        {frase}
-                      </p>
-                    </div>
+                    {/* Overlay champagne quando selecionado */}
+                    {isSelected && (
+                      <div style={{
+                        position: 'absolute',
+                        inset: 0,
+                        background: 'rgba(191,166,122,0.10)',
+                      }} />
+                    )}
 
-                    {/* Nome — visível sem hover */}
+                    {/* Overlay hover com frase emocional (apenas não-selecionado) */}
+                    {!isSelected && (
+                      <div style={{
+                        position: 'absolute',
+                        inset: 0,
+                        background: 'rgba(14,15,17,0.72)',
+                        opacity: isHovered ? 1 : 0,
+                        transition: 'opacity 380ms var(--ease-lux)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        padding: 16,
+                      }}>
+                        <p style={{
+                          fontFamily: 'var(--serif-display)',
+                          fontWeight: 300,
+                          fontStyle: 'italic',
+                          fontSize: 15,
+                          color: 'var(--champagne)',
+                          textAlign: 'center',
+                          lineHeight: 1.45,
+                          transform: isHovered ? 'translateY(0)' : 'translateY(8px)',
+                          transition: 'transform 420ms var(--ease-lux)',
+                          margin: 0,
+                        }}>
+                          {frase}
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Badge de ordem quando selecionado */}
+                    {isSelected && (
+                      <div style={{
+                        position: 'absolute',
+                        top: 10,
+                        right: 10,
+                        width: 26,
+                        height: 26,
+                        borderRadius: '50%',
+                        background: 'var(--champagne)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontFamily: 'var(--sans)',
+                        fontSize: 11,
+                        fontWeight: 600,
+                        color: 'var(--noir)',
+                      }}>
+                        {order}
+                      </div>
+                    )}
+
+                    {/* Nome emocional */}
                     <div style={{
                       position: 'absolute',
                       bottom: 0,
                       left: 0,
                       right: 0,
-                      padding: '14px 16px',
-                      opacity: hovered ? 0 : 1,
-                      transition: 'opacity 280ms var(--ease-lux)',
+                      padding: '12px 14px',
+                      textAlign: 'left',
                     }}>
-                      <p style={{
-                        fontFamily: 'var(--sans)',
-                        fontSize: 9,
-                        fontWeight: 600,
-                        letterSpacing: '0.3em',
-                        textTransform: 'uppercase',
-                        color: 'var(--champagne)',
-                        margin: '0 0 5px',
-                      }}>
-                        {amb.nomeSimples}
-                      </p>
-                      <p style={{
+                      <span style={{
                         fontFamily: 'var(--serif-display)',
                         fontWeight: 300,
-                        fontSize: 16,
-                        color: 'var(--marfim)',
+                        fontSize: isMobile ? 14 : 16,
                         lineHeight: 1.2,
-                        margin: 0,
+                        color: isSelected ? 'var(--champagne)' : 'var(--marfim)',
+                        transition: 'color 300ms var(--ease-lux)',
                       }}>
                         {amb.nomeEmocional}
-                      </p>
+                      </span>
                     </div>
-                  </div>
+                  </button>
                 </Reveal>
               );
             })}
           </div>
 
-          {/* Card "Outro" — largura total, fundo plano */}
+          {/* Card "Outro" — largura total */}
           <Reveal delay={360}>
-            <div
-              role="button"
-              tabIndex={0}
-              onClick={() => navigateToQuiz(OUTRO.id, onNavigate)}
-              onKeyDown={e => e.key === 'Enter' && navigateToQuiz(OUTRO.id, onNavigate)}
-              onMouseEnter={() => setHoveredId(OUTRO.id)}
-              onMouseLeave={() => setHoveredId(null)}
-              style={{
-                marginTop: 8,
-                height: 72,
-                background: hoveredId === OUTRO.id ? 'var(--antracite)' : '#111316',
-                border: '1px solid var(--carvao)',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: 16,
-                transition: 'background 300ms var(--ease-lux)',
-                outline: 'none',
-              }}
-            >
-              <span style={{
-                fontFamily: 'var(--sans)',
-                fontSize: 10,
-                fontWeight: 600,
-                letterSpacing: '0.3em',
-                textTransform: 'uppercase',
-                color: hoveredId === OUTRO.id ? 'var(--champagne)' : 'var(--pewter)',
-                transition: 'color 300ms var(--ease-lux)',
-              }}>
-                Outro Ambiente
-              </span>
-              <span style={{
-                fontFamily: 'var(--serif-display)',
-                fontWeight: 300,
-                fontStyle: 'italic',
-                fontSize: 15,
-                color: hoveredId === OUTRO.id ? 'var(--champagne)' : 'var(--pewter)',
-                transition: 'color 300ms var(--ease-lux)',
-                opacity: hoveredId === OUTRO.id ? 1 : 0.6,
-              }}>
-                {hoveredId === OUTRO.id ? HOVER_FRASE.outro : '— o espaço que existe só na sua cabeça'}
-              </span>
-            </div>
+            {(() => {
+              const isSelected = selectedIds.includes(OUTRO.id);
+              const order      = selectedIds.indexOf(OUTRO.id) + 1;
+              const isHovered  = hoveredId === OUTRO.id && !isSelected;
+              return (
+                <button
+                  onClick={() => toggle(OUTRO.id)}
+                  onMouseEnter={() => setHoveredId(OUTRO.id)}
+                  onMouseLeave={() => setHoveredId(null)}
+                  aria-pressed={isSelected}
+                  aria-label={OUTRO.nomeEmocional}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 16,
+                    width: '100%',
+                    marginTop: 8,
+                    height: 64,
+                    background: isSelected ? 'rgba(191,166,122,0.08)' : (isHovered ? 'var(--antracite)' : '#111316'),
+                    border: `2px solid ${isSelected ? 'var(--champagne)' : 'transparent'}`,
+                    cursor: 'pointer',
+                    padding: 0,
+                    borderRadius: 0,
+                    outline: 'none',
+                    position: 'relative',
+                    transition: 'background 300ms var(--ease-lux), border-color 300ms var(--ease-lux)',
+                  }}
+                >
+                  {isSelected && (
+                    <div style={{
+                      position: 'absolute',
+                      top: 8,
+                      right: 10,
+                      width: 22,
+                      height: 22,
+                      borderRadius: '50%',
+                      background: 'var(--champagne)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontFamily: 'var(--sans)',
+                      fontSize: 10,
+                      fontWeight: 600,
+                      color: 'var(--noir)',
+                    }}>
+                      {order}
+                    </div>
+                  )}
+                  <span style={{
+                    fontFamily: 'var(--sans)',
+                    fontSize: 10,
+                    fontWeight: 600,
+                    letterSpacing: '0.3em',
+                    textTransform: 'uppercase',
+                    color: isSelected ? 'var(--champagne)' : (isHovered ? 'var(--marfim)' : 'var(--pewter)'),
+                    transition: 'color 300ms var(--ease-lux)',
+                  }}>
+                    Outro Ambiente
+                  </span>
+                  <span style={{
+                    fontFamily: 'var(--serif-display)',
+                    fontWeight: 300,
+                    fontStyle: 'italic',
+                    fontSize: 14,
+                    color: isSelected ? 'var(--champagne)' : 'var(--pewter)',
+                    opacity: (isSelected || isHovered) ? 1 : 0.5,
+                    transition: 'color 300ms var(--ease-lux), opacity 300ms var(--ease-lux)',
+                  }}>
+                    {isSelected
+                      ? HOVER_FRASE.outro
+                      : '— o espaço que existe só na sua cabeça'}
+                  </span>
+                </button>
+              );
+            })()}
           </Reveal>
+
+          {/* Rodapé da seção: contagem + Continuar */}
+          <div style={{
+            marginTop: 24,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexDirection: isMobile ? 'column' : 'row',
+            gap: 16,
+            opacity: canContinue ? 1 : 0,
+            transform: canContinue ? 'translateY(0)' : 'translateY(8px)',
+            pointerEvents: canContinue ? 'auto' : 'none',
+            transition: 'opacity 400ms var(--ease-lux), transform 400ms var(--ease-lux)',
+          }}>
+            <span style={{
+              fontFamily: 'var(--sans)',
+              fontSize: 12,
+              fontWeight: 500,
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+              color: 'var(--champagne)',
+            }}>
+              {selectedIds.length === 1
+                ? '1 ambiente selecionado'
+                : `${selectedIds.length} ambientes selecionados`}
+            </span>
+            <Button
+              onClick={handleContinuar}
+              style={isMobile ? { width: '100%', padding: '18px 24px' } : undefined}
+            >
+              Continuar
+            </Button>
+          </div>
 
         </div>
       </div>

@@ -18,7 +18,12 @@ export function FooterCol({ title, items, onNavigate }: FooterColProps) {
       <Eyebrow style={{ color: 'var(--pewter)', marginBottom: 18 }}>{title}</Eyebrow>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
         {items.map(it => (
-          <button key={it} onClick={() => NAV_MAP[it] && onNavigate && onNavigate(NAV_MAP[it])} style={{
+          <button key={it} onClick={() => {
+            const target = NAV_MAP[it];
+            if (!target || !onNavigate) return;
+            if (target === 'quiz') sessionStorage.removeItem('quiz_home_selecao');
+            onNavigate(target);
+          }} style={{
             background: 'none', border: 'none', textAlign: 'left', padding: 0,
             cursor: NAV_MAP[it] ? 'pointer' : 'default',
             fontFamily: 'var(--sans)', fontSize: 14,
