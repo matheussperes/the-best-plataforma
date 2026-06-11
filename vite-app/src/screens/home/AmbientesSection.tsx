@@ -5,7 +5,7 @@ import { Display } from '../../components/primitives/Display';
 import { Reveal } from '../../components/shared/Reveal';
 import { AMBIENTES } from '../../data/quizData';
 import imgCozinha01 from '/assets/images/imgCozinha01.webp';
-import imgCloset02 from '/assets/images/imgCloset02.webp';
+import imgCloset01 from '/assets/images/imgCloset01.webp';
 import imgSala01 from '/assets/images/imgSala01.webp';
 import imgQuarto01 from '/assets/images/imgQuarto01.webp';
 import imgBanheiro01 from '/assets/images/imgBanheiro01.jpg';
@@ -19,7 +19,7 @@ interface AmbientesSectionProps {
 
 const AMBIENTE_IMAGE: Record<string, string | null> = {
   cozinha:    imgCozinha01,
-  closet:     imgCloset02,
+  closet:     imgCloset01,
   sala:       imgSala01,
   quarto:     imgQuarto01,
   banheiro:   imgBanheiro01,
