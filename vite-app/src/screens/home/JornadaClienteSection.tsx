@@ -12,7 +12,7 @@ const ETAPAS = [
   { num: '06', nome: 'Entrega',    prazo: '1 dia',           sensacao: 'As chaves do novo ambiente. E 5 anos de garantia.' },
 ];
 
-export function MetodoSection() {
+export function JornadaClienteSection() {
   const isMobile = useIsMobile();
   const pad = isMobile ? '80px 24px' : '200px 120px';
 

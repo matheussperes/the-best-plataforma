@@ -2,7 +2,7 @@ import { Footer } from '../../components/layout/Footer';
 import { Hero } from './Hero';
 import { Manifesto } from './Manifesto';
 import { AmbientesSection } from './AmbientesSection';
-import { MetodoSection } from './MetodoSection';
+import { JornadaClienteSection } from './JornadaClienteSection';
 import { PortfolioTeaser } from './PortfolioTeaser';
 import { QuoteSection } from './QuoteSection';
 import { CTAStrip } from './CTAStrip';
@@ -17,7 +17,7 @@ export function HomeScreen({ onNavigate }: HomeScreenProps) {
       <Hero onNavigate={onNavigate} />
       <Manifesto />
       <AmbientesSection onNavigate={onNavigate} />
-      <MetodoSection />
+      <JornadaClienteSection />
       <PortfolioTeaser onNavigate={onNavigate} />
       <QuoteSection />
       <CTAStrip onNavigate={onNavigate} />
