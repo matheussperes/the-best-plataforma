@@ -3,6 +3,7 @@ import { Hero } from './Hero';
 import { Manifesto } from './Manifesto';
 import { AmbientesSection } from './AmbientesSection';
 import { MetodoSection } from './MetodoSection';
+import { NumerosSection } from './NumerosSection';
 import { JornadaClienteSection } from './JornadaClienteSection';
 import { PortfolioTeaser } from './PortfolioTeaser';
 import { QuoteSection } from './QuoteSection';
@@ -19,6 +20,7 @@ export function HomeScreen({ onNavigate }: HomeScreenProps) {
       <Manifesto />
       <AmbientesSection onNavigate={onNavigate} />
       <MetodoSection />
+      <NumerosSection />
       <JornadaClienteSection />
       <PortfolioTeaser onNavigate={onNavigate} />
       <QuoteSection />
