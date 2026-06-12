@@ -4,6 +4,7 @@ import { Manifesto } from './Manifesto';
 import { AmbientesSection } from './AmbientesSection';
 import { MetodoSection } from './MetodoSection';
 import { NumerosSection } from './NumerosSection';
+import { DepoimentosSection } from './DepoimentosSection';
 import { JornadaClienteSection } from './JornadaClienteSection';
 import { PortfolioTeaser } from './PortfolioTeaser';
 import { QuoteSection } from './QuoteSection';
@@ -21,6 +22,7 @@ export function HomeScreen({ onNavigate }: HomeScreenProps) {
       <AmbientesSection onNavigate={onNavigate} />
       <MetodoSection />
       <NumerosSection />
+      <DepoimentosSection />
       <JornadaClienteSection />
       <PortfolioTeaser onNavigate={onNavigate} />
       <QuoteSection />
