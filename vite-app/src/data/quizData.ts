@@ -90,7 +90,7 @@ export const AMBIENTES: AmbienteContent[] = [
   {
     id: 'cozinha',
     nomeSimples: 'Cozinha',
-    nomeEmocional: 'Cozinha para receber',
+    nomeEmocional: 'Cozinha - Para Reunir',
     estilos: ESTILOS,
     cenas: [
       { id: 'coz_c1', label: 'Domingos cozinhando para a família' },
@@ -120,7 +120,7 @@ export const AMBIENTES: AmbienteContent[] = [
   {
     id: 'closet',
     nomeSimples: 'Closet',
-    nomeEmocional: 'Closet',
+    nomeEmocional: 'Closet - Para Inspirar',
     estilos: ESTILOS,
     cenas: [
       { id: 'clo_c1', label: 'Começar o dia com calma e intenção' },
@@ -150,7 +150,7 @@ export const AMBIENTES: AmbienteContent[] = [
   {
     id: 'sala',
     nomeSimples: 'Sala',
-    nomeEmocional: 'Sala',
+    nomeEmocional: 'Sala - Para Viver',
     estilos: ESTILOS,
     cenas: [
       { id: 'sal_c1', label: 'Receber amigos e família em casa' },
@@ -180,7 +180,7 @@ export const AMBIENTES: AmbienteContent[] = [
   {
     id: 'quarto',
     nomeSimples: 'Quarto',
-    nomeEmocional: 'Quarto para descansar',
+    nomeEmocional: 'Quarto - Para Sonhar',
     estilos: ESTILOS,
     cenas: [
       { id: 'qua_c1', label: 'Acordar devagar, com luz e tranquilidade' },
@@ -210,7 +210,7 @@ export const AMBIENTES: AmbienteContent[] = [
   {
     id: 'banheiro',
     nomeSimples: 'Banheiro',
-    nomeEmocional: 'Banheiro para se cuidar',
+    nomeEmocional: 'Banheiro - Para Renovar',
     estilos: ESTILOS,
     cenas: [
       { id: 'ban_c1', label: 'Começar o dia com calma e leveza' },
@@ -240,7 +240,7 @@ export const AMBIENTES: AmbienteContent[] = [
   {
     id: 'escritorio',
     nomeSimples: 'Escritório',
-    nomeEmocional: 'Escritório para criar',
+    nomeEmocional: 'Escritório - Para Conquista',
     estilos: ESTILOS,
     cenas: [
       { id: 'esc_c1', label: 'Trabalhar com foco e produtividade' },
@@ -270,7 +270,7 @@ export const AMBIENTES: AmbienteContent[] = [
   {
     id: 'gourmet',
     nomeSimples: 'Área Gourmet',
-    nomeEmocional: 'Área Gourmet para reunir',
+    nomeEmocional: 'Área Gourmet - Para Celebrar',
     estilos: ESTILOS,
     cenas: [
       { id: 'gou_c1', label: 'Reunir a família para um churrasco de domingo' },
@@ -300,7 +300,7 @@ export const AMBIENTES: AmbienteContent[] = [
   {
     id: 'lavanderia',
     nomeSimples: 'Lavanderia',
-    nomeEmocional: 'Lavanderia para uma rotina leve',
+    nomeEmocional: 'Lavanderia - Para Facilitar',
     estilos: ESTILOS,
     cenas: [
       { id: 'lav_c1', label: 'Cuidar da casa sem complicação' },
