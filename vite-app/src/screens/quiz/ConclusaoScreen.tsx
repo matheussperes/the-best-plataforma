@@ -5,11 +5,11 @@ import { Button } from '../../components/primitives/Button';
 interface ConclusaoScreenProps {
   nomeEmocional: string;
   image: string;
-  ambienteAtual: number;       // índice base-0
+  ambienteAtual: number;
   totalAmbientes: number;
-  proximoNomeEmocional?: string; // undefined quando é o último
+  proximoNomeEmocional?: string;
   onNext: () => void;
-  onRevisar: () => void;         // volta para Investimento
+  onRevisar: () => void;
 }
 
 export function ConclusaoScreen({
@@ -30,7 +30,6 @@ export function ConclusaoScreen({
       display: 'flex', alignItems: 'center', justifyContent: 'center',
       overflow: 'hidden', background: 'var(--noir)',
     }}>
-      {/* Background */}
       {image && (
         <img
           src={image}
@@ -46,7 +45,6 @@ export function ConclusaoScreen({
         background: 'linear-gradient(180deg, rgba(14,15,17,.25) 0%, rgba(14,15,17,.85) 100%)',
       }} />
 
-      {/* Progresso global — topo */}
       <div style={{
         position: 'absolute', top: isMobile ? 24 : 36, left: '50%',
         transform: 'translateX(-50%)',
@@ -61,7 +59,6 @@ export function ConclusaoScreen({
         ))}
       </div>
 
-      {/* Conteúdo */}
       <div style={{
         position: 'relative',
         textAlign: 'center',
@@ -69,7 +66,6 @@ export function ConclusaoScreen({
         maxWidth: 720,
         animation: 'fadeUp 700ms var(--ease-lux)',
       }}>
-        {/* Label de progresso */}
         <div style={{
           fontFamily: 'var(--sans)', fontSize: 10, fontWeight: 500,
           letterSpacing: '0.24em', textTransform: 'uppercase',
@@ -79,7 +75,7 @@ export function ConclusaoScreen({
         </div>
 
         <Display size={56} style={{ lineHeight: 1.05 }}>
-          {`Sua *${nomeEmocional}*\nestá tomando forma.`}
+          {`*${nomeEmocional}*\nestá tomando forma.`}
         </Display>
 
         <div style={{

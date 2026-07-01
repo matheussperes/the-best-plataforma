@@ -11,7 +11,7 @@ interface InvestimentoScreenProps {
   ambienteNomeEmocional: string;
   ambienteImage: string;
   initialSelected: string;
-  onSelect: (id: string) => void;   // auto-avança após seleção
+  onSelect: (id: string) => void;
   onBack: () => void;
 }
 
@@ -32,7 +32,6 @@ export function InvestimentoScreen({
       minHeight: '100dvh',
       background: 'var(--noir)',
     }}>
-      {/* Painel editorial */}
       {!isMobile && (
         <aside style={{
           position: 'relative', overflow: 'hidden',
@@ -67,7 +66,6 @@ export function InvestimentoScreen({
         </aside>
       )}
 
-      {/* Conteúdo */}
       <main style={{
         padding: isMobile ? '100px 24px 60px' : '64px 80px',
         overflowY: 'auto',
@@ -80,7 +78,7 @@ export function InvestimentoScreen({
           </Eyebrow>
 
           <Display size={44} style={{ lineHeight: 1.1 }}>
-            {`Quanto você imagina *investir* em sua ${ambienteNomeEmocional}?`}
+            {`Quanto você imagina *investir* em ${ambienteNomeEmocional}?`}
           </Display>
 
           <p className="ds-body-sm" style={{ color: 'var(--pewter)', marginTop: 12 }}>

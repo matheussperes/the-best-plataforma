@@ -36,8 +36,8 @@ interface LoopScreenProps {
   initialStep: LoopStep;
   quizData: QuizData;
   onUpdateData: (data: QuizData) => void;
-  onFinish: () => void;   // todos os ambientes concluídos → vai para Contato
-  onBack: () => void;     // back do primeiro ambiente → volta para Seleção
+  onFinish: () => void;
+  onBack: () => void;
 }
 
 export function LoopScreen({
@@ -55,11 +55,11 @@ export function LoopScreen({
   const content = AMBIENTE_MAP[ambienteId];
   const image = AMBIENTE_IMAGES[ambienteId] ?? '';
   const totalAmbientes = quizData.ambientesOrdenados.length;
+  const artigoDefinido = content.genero === 'f' ? 'nesta' : 'neste';
 
   const respostas: AmbienteRespostas =
     quizData.respostas[ambienteId] ?? makeAmbienteRespostas();
 
-  // Salva um campo das respostas do ambiente atual e avança o step
   const saveAndAdvance = useCallback((
     field: keyof AmbienteRespostas,
     value: AmbienteRespostas[keyof AmbienteRespostas],
@@ -76,17 +76,15 @@ export function LoopScreen({
     setStep(nextStep);
   }, [quizData, ambienteId, ambienteIndex, respostas, onUpdateData]);
 
-  // ── Tela 3 — Transição ────────────────────────────────────────────────────
   if (step === 'transicao') {
     const handleBack = () => {
       if (ambienteIndex === 0) {
-        onBack(); // volta para Seleção de Ambientes
+        onBack();
       } else {
         setAmbienteIndex(ambienteIndex - 1);
         setStep('conclusao');
       }
     };
-
     return (
       <TransitionScreen
         nomeEmocional={content.nomeEmocional}
@@ -97,7 +95,6 @@ export function LoopScreen({
     );
   }
 
-  // ── Tela 4 — Identidade ───────────────────────────────────────────────────
   if (step === 'identidade') {
     return (
       <LoopQuestionScreen
@@ -117,7 +114,6 @@ export function LoopScreen({
     );
   }
 
-  // ── Tela 5 — Cenas ────────────────────────────────────────────────────────
   if (step === 'cenas') {
     return (
       <LoopQuestionScreen
@@ -136,14 +132,13 @@ export function LoopScreen({
     );
   }
 
-  // ── Tela 6 — Inegociáveis ─────────────────────────────────────────────────
   if (step === 'inegociaveis') {
     return (
       <LoopQuestionScreen
         ambienteNomeSimples={content.nomeSimples}
         ambienteImage={image}
         secao="O que não abre mão"
-        question={`O que é *inegociável* para você neste ${content.nomeSimples.toLowerCase()}?`}
+        question={`O que é *inegociável* para você ${artigoDefinido} ${content.nomeSimples.toLowerCase()}?`}
         instrucao="Escolha até 3."
         options={content.inegociaveis}
         initialSelected={respostas.inegociaveis}
@@ -156,14 +151,13 @@ export function LoopScreen({
     );
   }
 
-  // ── Tela 7 — Memória sensorial ────────────────────────────────────────────
   if (step === 'sensorial') {
     return (
       <LoopQuestionScreen
         ambienteNomeSimples={content.nomeSimples}
         ambienteImage={image}
         secao="A memória"
-        question={`Qual *som* você quer ouvir neste ${content.nomeSimples.toLowerCase()}?`}
+        question={`Qual *som* você quer ouvir ${artigoDefinido} ${content.nomeSimples.toLowerCase()}?`}
         instrucao="Escolha quantos quiser."
         options={content.memorias}
         initialSelected={respostas.memorias}
@@ -175,7 +169,6 @@ export function LoopScreen({
     );
   }
 
-  // ── Tela 8 — Investimento ─────────────────────────────────────────────────
   if (step === 'investimento') {
     return (
       <InvestimentoScreen
@@ -189,7 +182,6 @@ export function LoopScreen({
     );
   }
 
-  // ── Tela 9 — Conclusão ────────────────────────────────────────────────────
   const isLastAmbiente = ambienteIndex === totalAmbientes - 1;
   const proximoId = isLastAmbiente ? undefined : quizData.ambientesOrdenados[ambienteIndex + 1];
   const proximoNome = proximoId ? AMBIENTE_MAP[proximoId]?.nomeEmocional : undefined;

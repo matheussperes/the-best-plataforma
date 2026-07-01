@@ -51,7 +51,7 @@ export function TransitionScreen({ nomeEmocional, image, onNext, onBack }: Trans
         maxWidth: 700, animation: 'fadeUp 700ms var(--ease-lux)',
       }}>
         <Display size={72} style={{ lineHeight: 1.0 }}>
-          {`Sua\n*${nomeEmocional}*.`}
+          {`*${nomeEmocional}*`}
         </Display>
 
         <p className="ds-body-lg" style={{ color: 'var(--pewter)', marginTop: 20 }}>

@@ -11,10 +11,13 @@ export interface InvestimentoOption extends QuizOption {
   max: number;
 }
 
+export type Genero = 'm' | 'f';
+
 export interface AmbienteContent {
   id: string;
   nomeSimples: string;
   nomeEmocional: string;
+  genero: Genero;             // usado para concordância (neste/nesta, um/uma)
   estilos: QuizOption[];      // Tela 4 — os 4 estilos são globais mas o type vive aqui
   cenas: QuizOption[];        // Tela 5
   inegociaveis: QuizOption[]; // Tela 6
@@ -91,6 +94,7 @@ export const AMBIENTES: AmbienteContent[] = [
     id: 'cozinha',
     nomeSimples: 'Cozinha',
     nomeEmocional: 'Cozinha - Para Reunir',
+    genero: 'f',
     estilos: ESTILOS,
     cenas: [
       { id: 'coz_c1', label: 'Domingos cozinhando para a família' },
@@ -121,6 +125,7 @@ export const AMBIENTES: AmbienteContent[] = [
     id: 'closet',
     nomeSimples: 'Closet',
     nomeEmocional: 'Closet - Para Inspirar',
+    genero: 'm',
     estilos: ESTILOS,
     cenas: [
       { id: 'clo_c1', label: 'Começar o dia com calma e intenção' },
@@ -151,6 +156,7 @@ export const AMBIENTES: AmbienteContent[] = [
     id: 'sala',
     nomeSimples: 'Sala',
     nomeEmocional: 'Sala - Para Viver',
+    genero: 'f',
     estilos: ESTILOS,
     cenas: [
       { id: 'sal_c1', label: 'Receber amigos e família em casa' },
@@ -181,6 +187,7 @@ export const AMBIENTES: AmbienteContent[] = [
     id: 'quarto',
     nomeSimples: 'Quarto',
     nomeEmocional: 'Quarto - Para Sonhar',
+    genero: 'm',
     estilos: ESTILOS,
     cenas: [
       { id: 'qua_c1', label: 'Acordar devagar, com luz e tranquilidade' },
@@ -211,6 +218,7 @@ export const AMBIENTES: AmbienteContent[] = [
     id: 'banheiro',
     nomeSimples: 'Banheiro',
     nomeEmocional: 'Banheiro - Para Renovar',
+    genero: 'm',
     estilos: ESTILOS,
     cenas: [
       { id: 'ban_c1', label: 'Começar o dia com calma e leveza' },
@@ -241,6 +249,7 @@ export const AMBIENTES: AmbienteContent[] = [
     id: 'escritorio',
     nomeSimples: 'Escritório',
     nomeEmocional: 'Escritório - Para Conquista',
+    genero: 'm',
     estilos: ESTILOS,
     cenas: [
       { id: 'esc_c1', label: 'Trabalhar com foco e produtividade' },
@@ -271,6 +280,7 @@ export const AMBIENTES: AmbienteContent[] = [
     id: 'gourmet',
     nomeSimples: 'Área Gourmet',
     nomeEmocional: 'Área Gourmet - Para Celebrar',
+    genero: 'f',
     estilos: ESTILOS,
     cenas: [
       { id: 'gou_c1', label: 'Reunir a família para um churrasco de domingo' },
@@ -301,6 +311,7 @@ export const AMBIENTES: AmbienteContent[] = [
     id: 'lavanderia',
     nomeSimples: 'Lavanderia',
     nomeEmocional: 'Lavanderia - Para Facilitar',
+    genero: 'f',
     estilos: ESTILOS,
     cenas: [
       { id: 'lav_c1', label: 'Cuidar da casa sem complicação' },
@@ -331,6 +342,7 @@ export const AMBIENTES: AmbienteContent[] = [
     id: 'outro',
     nomeSimples: 'Outro',
     nomeEmocional: 'Outro ambiente',
+    genero: 'm',
     estilos: ESTILOS,
     cenas: [
       { id: 'out_c1', label: 'Liberdade total para criar' },
