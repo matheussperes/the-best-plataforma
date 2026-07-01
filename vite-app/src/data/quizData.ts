@@ -4,6 +4,7 @@ export interface QuizOption {
   id: string;
   label: string;
   descricao?: string;
+  moodboard?: string;
 }
 
 export interface InvestimentoOption extends QuizOption {
@@ -58,23 +59,21 @@ export type LeadCategoria = 'ESSENCIAL' | 'PADRÃO' | 'PREMIUM' | 'EXCLUSIVO' | 
 // ─── Estilos — Tela 4 (globais, mesmos para todos os ambientes) ───────────────
 
 export const ESTILOS: QuizOption[] = [
-  { id: 'contemporaneo', label: 'Contemporâneo Sereno',      descricao: 'Linhas limpas, mármore claro, madeira nobre.' },
-  { id: 'industrial',    label: 'Industrial Sofisticado',     descricao: 'Concreto pigmentado, aço escovado, presença marcante.' },
-  { id: 'classico',      label: 'Clássico Reinterpretado',    descricao: 'Boiseries modernas, dourado fosco, elegância eterna.' },
-  { id: 'organico',      label: 'Orgânico Quente',            descricao: 'Madeiras vivas, curvas suaves, acolhimento natural.' },
+  { id: 'contemporaneo', label: 'Contemporâneo Sereno',   descricao: 'Linhas limpas, mármore claro, madeira nobre.',              moodboard: '/assets/moodboards/contemporaneo.jpg' },
+  { id: 'industrial',    label: 'Industrial Sofisticado',  descricao: 'Concreto pigmentado, aço escovado, presença marcante.',     moodboard: '/assets/moodboards/industrial.jpg' },
+  { id: 'classico',      label: 'Clássico Reinterpretado', descricao: 'Boiseries modernas, dourado fosco, elegância eterna.',      moodboard: '/assets/moodboards/classico.jpg' },
+  { id: 'organico',      label: 'Orgânico Quente',         descricao: 'Madeiras vivas, curvas suaves, acolhimento natural.',       moodboard: '/assets/moodboards/organico.jpg' },
 ];
 
 // ─── Investimento — Tela 8 (global, mesmo para todos os ambientes) ────────────
 
 export const INVESTIMENTO_OPTIONS: InvestimentoOption[] = [
-  { id: 'ate5k',      label: 'Até R$ 5.000',             descricao: 'SOLUÇÕES PONTUAIS',          min: 0,      max: 5000 },
-  { id: '5k15k',      label: 'R$ 5.000 — R$ 15.000',     descricao: 'MÓVEIS ESPECÍFICOS',         min: 5000,   max: 15000 },
-  { id: '15k40k',     label: 'R$ 15.000 — R$ 40.000',    descricao: 'AMBIENTE MÉDIO PORTE',       min: 15000,  max: 40000 },
-  { id: '40k80k',     label: 'R$ 40.000 — R$ 80.000',    descricao: 'AMBIENTE COMPLETO PADRÃO',   min: 40000,  max: 80000 },
-  { id: '80k150k',    label: 'R$ 80.000 — R$ 150.000',   descricao: 'AMBIENTE ASSINADO PREMIUM',  min: 80000,  max: 150000 },
-  { id: '150k300k',   label: 'R$ 150.000 — R$ 300.000',  descricao: 'PROJETO EXCLUSIVO DE AUTOR', min: 150000, max: 300000 },
-  { id: 'acima300k',  label: 'Acima de R$ 300.000',      descricao: 'PROJETO SEM LIMITES',        min: 300000, max: 600000 },
-  { id: 'conversar',  label: 'Prefiro conversar',         descricao: 'VALORES PERSONALIZADOS',    min: 0,      max: 0 },
+  { id: 'ate5k',     label: 'Até R$ 5.000',           descricao: 'SOLUÇÕES PONTUAIS',         min: 0,      max: 5000 },
+  { id: '5k15k',     label: 'R$ 5.000 — R$ 15.000',   descricao: 'MÓVEIS ESPECÍFICOS',        min: 5000,   max: 15000 },
+  { id: '15k40k',    label: 'R$ 15.000 — R$ 40.000',  descricao: 'AMBIENTE MÉDIO PORTE',      min: 15000,  max: 40000 },
+  { id: '80k150k',   label: 'R$ 80.000 — R$ 150.000', descricao: 'AMBIENTE ASSINADO PREMIUM', min: 80000,  max: 150000 },
+  { id: 'acima300k', label: 'Acima de R$ 300.000',    descricao: 'PROJETO SEM LIMITES',       min: 300000, max: 600000 },
+  { id: 'conversar', label: 'Prefiro conversar',       descricao: 'VALORES PERSONALIZADOS',   min: 0,      max: 0 },
 ];
 
 // ─── Prazo — Tela 10 ──────────────────────────────────────────────────────────

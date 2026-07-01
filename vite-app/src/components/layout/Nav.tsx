@@ -10,7 +10,7 @@ interface NavProps {
 const LINKS = [
   { id: 'home',      label: 'Início' },
   { id: 'portfolio', label: 'Portfólio' },
-  { id: 'quiz',      label: 'O Construtor' },
+  { id: 'quiz',      label: 'Orçamento' },
 ];
 
 export function Nav({ current, onNavigate }: NavProps) {

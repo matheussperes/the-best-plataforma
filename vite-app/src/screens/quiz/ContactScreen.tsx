@@ -154,7 +154,7 @@ export function ContactScreen({ initialData, onSubmit, onBack }: ContactScreenPr
             <div style={{
               display: 'flex',
               flexDirection: 'column',
-              gap: 8,
+              gap: 5,
             }}>
               {PRAZO_OPTIONS.map(opt => {
                 const isSelected = data.prazo === opt.id;
@@ -164,7 +164,7 @@ export function ContactScreen({ initialData, onSubmit, onBack }: ContactScreenPr
                     onClick={() => set('prazo')(opt.id)}
                     style={{
                       textAlign: 'left', cursor: 'pointer',
-                      padding: '16px 20px',
+                      padding: '10px 16px',
                       background: isSelected ? 'var(--champagne-soft)' : 'var(--antracite)',
                       border: `1px solid ${isSelected ? 'var(--champagne)' : 'var(--carvao)'}`,
                       borderRadius: 0,

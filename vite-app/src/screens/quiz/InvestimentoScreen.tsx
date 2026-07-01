@@ -85,7 +85,7 @@ export function InvestimentoScreen({
             Selecione uma faixa.
           </p>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 28 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginTop: 28 }}>
             {INVESTIMENTO_OPTIONS.map(opt => (
               <OptionCard
                 key={opt.id}

@@ -1,9 +1,9 @@
 import { Footer } from '../../components/layout/Footer';
 import { Hero } from './Hero';
 import { Manifesto } from './Manifesto';
-import { AmbientesSection } from './AmbientesSection';
 import { MetodoSection } from './MetodoSection';
 import { NumerosSection } from './NumerosSection';
+import { QuizCTASection } from './QuizCTASection';
 import { DepoimentosSection } from './DepoimentosSection';
 import { JornadaClienteSection } from './JornadaClienteSection';
 import { PortfolioTeaser } from './PortfolioTeaser';
@@ -19,9 +19,9 @@ export function HomeScreen({ onNavigate }: HomeScreenProps) {
     <div>
       <Hero onNavigate={onNavigate} />
       <Manifesto />
-      <AmbientesSection onNavigate={onNavigate} />
       <MetodoSection />
       <NumerosSection />
+      <QuizCTASection onNavigate={onNavigate} />
       <DepoimentosSection />
       <JornadaClienteSection />
       <PortfolioTeaser onNavigate={onNavigate} />

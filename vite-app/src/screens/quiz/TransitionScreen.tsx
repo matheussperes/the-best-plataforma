@@ -1,8 +1,5 @@
-import { useEffect, useRef } from 'react';
 import { Display } from '../../components/primitives/Display';
 import { BackBtn } from './BackBtn';
-
-const AUTO_ADVANCE_MS = 2500;
 
 interface TransitionScreenProps {
   nomeEmocional: string;
@@ -12,18 +9,6 @@ interface TransitionScreenProps {
 }
 
 export function TransitionScreen({ nomeEmocional, image, onNext, onBack }: TransitionScreenProps) {
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-  useEffect(() => {
-    timerRef.current = setTimeout(onNext, AUTO_ADVANCE_MS);
-    return () => { if (timerRef.current) clearTimeout(timerRef.current); };
-  }, [onNext]);
-
-  const handleNext = () => {
-    if (timerRef.current) clearTimeout(timerRef.current);
-    onNext();
-  };
-
   return (
     <div style={{
       position: 'relative', minHeight: '100dvh',
@@ -59,7 +44,7 @@ export function TransitionScreen({ nomeEmocional, image, onNext, onBack }: Trans
         </p>
 
         <button
-          onClick={handleNext}
+          onClick={onNext}
           style={{
             marginTop: 48,
             background: 'none', border: '1px solid var(--champagne)', cursor: 'pointer',

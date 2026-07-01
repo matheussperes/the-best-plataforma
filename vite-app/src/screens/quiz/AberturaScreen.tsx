@@ -16,7 +16,7 @@ const BADGE = (
       fontFamily: 'var(--sans)', fontSize: 10, letterSpacing: '0.24em',
       textTransform: 'uppercase', color: 'var(--champagne)',
     }}>
-      O Construtor Emocional™
+      CONSTRUA SEU ORÇAMENTO
     </span>
   </div>
 );

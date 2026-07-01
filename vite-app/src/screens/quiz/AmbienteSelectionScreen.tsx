@@ -64,7 +64,7 @@ export function AmbienteSelectionScreen({
         maxWidth: 1400, margin: '0 auto',
       }}>
         <Eyebrow style={{ marginBottom: 16 }}>
-          O Construtor Emocional™ · Ambientes
+          CONSTRUA SEU ORÇAMENTO · Ambientes
         </Eyebrow>
 
         <div style={{
@@ -103,7 +103,7 @@ export function AmbienteSelectionScreen({
         padding: isMobile ? '0 16px' : '0 96px',
         maxWidth: 1400, margin: '0 auto',
         display: 'grid',
-        gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)',
+        gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)',
         gap: isMobile ? 10 : 14,
       }}>
         {AMBIENTES.map((ambiente, idx) => {
@@ -117,7 +117,7 @@ export function AmbienteSelectionScreen({
               onClick={() => toggle(ambiente.id)}
               style={{
                 position: 'relative',
-                aspectRatio: '3 / 4',
+                aspectRatio: '1 / 1',
                 overflow: 'hidden',
                 cursor: 'pointer',
                 border: `2px solid ${isSelected ? 'var(--champagne)' : 'transparent'}`,
@@ -139,7 +139,7 @@ export function AmbienteSelectionScreen({
                   style={{
                     position: 'absolute', inset: 0, width: '100%', height: '100%',
                     objectFit: 'cover',
-                    filter: `saturate(.8) ${isSelected ? 'brightness(.7)' : 'brightness(.55)'}`,
+                    filter: 'saturate(.9)',
                     transition: 'filter 400ms var(--ease-lux)',
                   }}
                 />
